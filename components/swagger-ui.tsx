@@ -1,18 +1,19 @@
 "use client";
 
+import React from "react";
 import SwaggerUIReact from "swagger-ui-react";
 import "swagger-ui-react/swagger-ui.css";
 
 interface SwaggerUIProps {
-  spec: Record<string, any>;
+  spec: Record<string, unknown>;
 }
 
-export default function SwaggerUI({ spec }: SwaggerUIProps) {
+export default function SwaggerUI({ spec }: SwaggerUIProps): React.ReactElement {
   return (
-    <div className="swagger-ui-container">
+    <div className='swagger-ui-container'>
       <SwaggerUIReact
         spec={spec}
-        docExpansion="list"
+        docExpansion='list'
         defaultModelsExpandDepth={-1}
         supportedSubmitMethods={["get", "post", "put", "delete"]}
         tryItOutEnabled={true}

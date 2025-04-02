@@ -23,7 +23,7 @@ A modern Next.js project template featuring TypeScript, Shadcn UI, and best prac
 
 ### Prerequisites
 
-- Node.js 18+ 
+- Node.js 18+
 - pnpm (recommended package manager)
 
 ### Installation
@@ -64,6 +64,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 ## Best Practices
 
 ### Components
+
 - Use Server Components by default
 - Mark client components explicitly with 'use client'
 - Wrap client components in Suspense with fallback
@@ -71,23 +72,27 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - Implement proper error boundaries
 
 ### Performance
+
 - Optimize images with WebP format and proper sizing
 - Minimize use of useEffect and setState
 - Favor Server Components (RSC) where possible
 - Implement proper caching strategies
 
 ### API Routes
+
 - Include Swagger documentation for all API routes
 - Implement proper error handling
 - Use appropriate HTTP methods and status codes
 
 ### Forms and Validation
+
 - Use Zod for form validation
 - Implement server-side validation
 - Handle form errors appropriately
 - Show loading states during form submission
 
 ### State Management
+
 - Minimize client-side state
 - Use React Context sparingly
 - Prefer server state when possible
@@ -96,11 +101,13 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 ## Development Guidelines
 
 1. **Branching:**
+
    - Main branch for production
    - Dev branch for development
    - Feature branches for new features
 
 2. **Commit Messages:**
+
    - Use clear, descriptive commit messages
    - Follow conventional commits format
 

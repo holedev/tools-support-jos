@@ -3,17 +3,19 @@
 ## Technologies Used
 
 ### Core Technologies
+
 1. **Next.js 15.2.3**
+
    - App Router
    - Server Components
    - Server Actions
    - Image Optimization
    - API Routes
    - Turbopack for development
-   - Swagger Documentation (swagger-ui-react 5.9.0)
-=======
+   - # Swagger Documentation (swagger-ui-react 5.9.0)
 
 2. **TypeScript**
+
    - Strict Mode
    - Type Safety
    - ESLint Integration
@@ -26,13 +28,16 @@
    - Custom Theming
 
 ### Development Tools
+
 1. **Package Management**
+
    - pnpm (preferred over npm)
    - Workspace Management
    - Dependencies Resolution
    - Lock File Maintenance
 
 2. **Code Quality**
+
    - ESLint
    - Prettier
    - TypeScript Compiler
@@ -47,18 +52,21 @@
 ## Development Setup
 
 ### Prerequisites
+
 - Node.js (v20)
 - pnpm
 - Git
 - Visual Studio Code (recommended)
 
 ### Environment Configuration
+
 ```bash
 # Required environment variables
 NEXT_PUBLIC_API_URL=http://localhost:3000/api
 ```
 
 ### Installation Steps
+
 ```bash
 # Clone repository
 git clone [repository-url]
@@ -73,24 +81,28 @@ pnpm dev
 ## Technical Constraints
 
 ### 1. Server Components
+
 - Default to server components
 - Client components must be explicitly marked
 - Proper suspense boundaries required
 - Loading states implementation
 
 ### 2. API Development
+
 - RESTful principles
 - Swagger documentation required
 - Type-safe endpoints
 - Proper error handling
 
 ### 3. Performance Requirements
+
 - Core Web Vitals optimization
 - Image optimization
 - Code splitting
 - Proper caching
 
 ### 4. Security Constraints
+
 - No sensitive data in client
 - Environment variables for secrets
 - Proper authentication
@@ -99,6 +111,7 @@ pnpm dev
 ## Dependencies
 
 ### Production Dependencies
+
 ```json
 {
   "next": "15.2.3",
@@ -116,6 +129,7 @@ pnpm dev
 ```
 
 ### Development Dependencies
+
 ```json
 {
   "@eslint/eslintrc": "^3",
@@ -142,6 +156,7 @@ pnpm dev
 ## Build and Deployment
 
 ### Build Process
+
 ```bash
 # Production build
 pnpm build
@@ -151,6 +166,7 @@ pnpm start
 ```
 
 ### Deployment Requirements
+
 - Node.js environment
 - Environment variables configured
 - Build artifacts deployment
@@ -159,12 +175,14 @@ pnpm start
 ## Monitoring and Maintenance
 
 ### Performance Monitoring
+
 - Core Web Vitals tracking
 - Error monitoring
 - API performance metrics
 - Client-side performance
 
 ### Updates and Maintenance
+
 - Regular dependency updates
 - Security patches
 - Performance optimization

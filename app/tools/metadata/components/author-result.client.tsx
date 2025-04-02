@@ -14,56 +14,45 @@ export function AuthorResult({ authorOutput, activeTab }: AuthorResultProps) {
   }
 
   return (
-    <div className="space-y-2 text-sm">
-      <h4 className="font-medium">Authors:</h4>
+    <div className='space-y-2 text-sm'>
+      <h4 className='font-medium'>Authors:</h4>
       {authorOutput.authors.map((author, i) => {
         const authorId = `author-${i}`;
         const emailId = `email-${i}`;
 
         return (
-          <div key={i} className="space-y-2 border-b pb-4 pl-4 last:border-0">
-            <div className="mb-2 font-medium">Author {i + 1}</div>
+          <div key={i} className='space-y-2 border-b pb-4 pl-4 last:border-0'>
+            <div className='mb-2 font-medium'>Author {i + 1}</div>
 
-            <div className="grid gap-2 text-sm">
-              <div className="flex items-center gap-2">
+            <div className='grid gap-2 text-sm'>
+              <div className='flex items-center gap-2'>
                 <div>
-                  <span className="text-muted-foreground">Name:</span> {author.name}
+                  <span className='text-muted-foreground'>Name:</span> {author.name}
                 </div>
-                <CopyButton text={author.name} fieldId={authorId} />
+                <CopyButton text={author.name} _fieldId={authorId} />
               </div>
 
               {author.affiliations.map((affId) => {
-                const aff = authorOutput.affiliations.find(
-                  (a) => a.id === affId
-                );
+                const aff = authorOutput.affiliations.find((a) => a.id === affId);
                 if (!aff) return null;
 
                 return (
-                  <div key={affId} className="flex items-center gap-2">
+                  <div key={affId} className='flex items-center gap-2'>
                     <div>
-                      <span className="text-muted-foreground">
-                        Affiliation {affId}:
-                      </span>{" "}
-                      {aff.text}
+                      <span className='text-muted-foreground'>Affiliation {affId}:</span> {aff.text}
                     </div>
-                    <CopyButton
-                      text={aff.text}
-                      fieldId={`affiliation-${affId}`}
-                    />
+                    <CopyButton text={aff.text} _fieldId={`affiliation-${affId}`} />
                   </div>
                 );
               })}
 
               {author.isCorresponding && author.email && (
-                <div className="flex items-center gap-2">
+                <div className='flex items-center gap-2'>
                   <div>
-                    <span className="text-muted-foreground">Email:</span>{" "}
-                    {author.email}
-                    <span className="ml-2 text-xs text-blue-700">
-                      (Corresponding Author)
-                    </span>
+                    <span className='text-muted-foreground'>Email:</span> {author.email}
+                    <span className='ml-2 text-xs text-blue-700'>(Corresponding Author)</span>
                   </div>
-                  <CopyButton text={author.email} fieldId={emailId} />
+                  <CopyButton text={author.email} _fieldId={emailId} />
                 </div>
               )}
             </div>

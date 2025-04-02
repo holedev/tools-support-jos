@@ -1,63 +1,50 @@
-import { dirname } from "path";
-import { fileURLToPath } from "url";
 import { FlatCompat } from "@eslint/eslintrc";
+import { fileURLToPath } from "node:url";
+import js from "@eslint/js";
+import nextNext from "@next/eslint-plugin-next";
+import eslintPluginJsxA11y from "eslint-plugin-jsx-a11y";
+import path from "node:path";
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
+const __dirname = path.dirname(__filename);
 const compat = new FlatCompat({
   baseDirectory: __dirname,
+  recommendedConfig: js.configs.recommended,
+  allConfig: js.configs.all
 });
 
-export default [
+const Configuration = [
+  {
+    ignores: ["**/dist", "**/node_modules", "**/.next", "**/components/ui", "**/public"]
+  },
   ...compat.extends(
     "next/core-web-vitals",
     "next/typescript",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:import/recommended",
-    "plugin:import/typescript",
-    "plugin:prettier/recommended"
+    "prettier",
+    "plugin:jsx-a11y/recommended",
+    "plugin:@next/next/recommended"
   ),
   {
-    rules: {
-      // React specific rules
-      "react/no-unused-prop-types": "error",
-      "react/self-closing-comp": "error",
-      "react/no-array-index-key": "warn",
-      
-      // TypeScript rules
-      "@typescript-eslint/no-explicit-any": "error",
-      "@typescript-eslint/explicit-function-return-type": ["error", {
-        allowExpressions: true,
-        allowTypedFunctionExpressions: true,
-      }],
-      "@typescript-eslint/no-unused-vars": ["error", {
-        argsIgnorePattern: "^_",
-        varsIgnorePattern: "^_"
-      }],
-      
-      // Import rules
-      "import/order": ["error", {
-        "groups": [
-          ["builtin", "external"],
-          "internal",
-          ["parent", "sibling"],
-          "index"
-        ],
-        "newlines-between": "always",
-        "alphabetize": { "order": "asc" }
-      }],
-      
-      // General rules
-      "no-console": ["warn", { allow: ["warn", "error"] }],
-      "prefer-const": "error",
-      "no-unused-expressions": "error"
+    plugins: {
+      "@next/next": nextNext,
+      "jsx-a11y": eslintPluginJsxA11y
     },
-    settings: {
-      "import/resolver": {
-        typescript: true,
-        node: true
-      }
+
+    languageOptions: {
+      globals: {}
+    },
+
+    rules: {
+      "react-hooks/exhaustive-deps": 0,
+      "no-console": ["error", { allow: ["info", "warn", "error"] }],
+      "no-unused-vars": [
+        "error",
+        { argsIgnorePattern: "^_", varsIgnorePattern: "^_", caughtErrorsIgnorePattern: "^_" }
+      ],
+      "no-duplicate-imports": "error",
+      "@typescript-eslint/no-require-imports": 0
     }
   }
 ];
+
+export default Configuration;

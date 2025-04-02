@@ -1,6 +1,6 @@
 import { createSwaggerSpec } from "next-swagger-doc";
 
-export const getApiDocs = () => {
+export const getApiDocs = (): Record<string, unknown> => {
   const spec = createSwaggerSpec({
     apiFolder: "app/api",
     definition: {
@@ -8,24 +8,24 @@ export const getApiDocs = () => {
       info: {
         title: "Next.js API Documentation",
         description: "API documentation for Next.js application",
-        version: "1.0.0",
+        version: "1.0.0"
       },
       servers: [
         {
           url: process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
-          description: "Local server",
-        },
+          description: "Local server"
+        }
       ],
       components: {
         schemas: {
           Animal: {
             type: "string",
             description: "The name of an animal",
-            example: "Lion",
-          },
-        },
-      },
-    },
-  });
+            example: "Lion"
+          }
+        }
+      }
+    }
+  }) as Record<string, unknown>;
   return spec;
 };

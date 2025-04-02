@@ -6,36 +6,30 @@ import { TabType } from "../types";
 
 interface AuthorInputProps {
   authorText: string;
-  setAuthorText: (text: string) => void;
+  setAuthorText: (_text: string) => void;
   activeTab: TabType;
-  setActiveTab: (tab: TabType) => void;
+  setActiveTab: (_tab: TabType) => void;
   onConvert: () => void;
 }
 
-export function AuthorInput({
-  authorText,
-  setAuthorText,
-  activeTab,
-  setActiveTab,
-  onConvert,
-}: AuthorInputProps) {
+export function AuthorInput({ authorText, setAuthorText, activeTab, setActiveTab, onConvert }: AuthorInputProps) {
   const handleConvertClick = () => {
     onConvert();
     setActiveTab("result");
   };
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <h3 className="font-semibold">Author Information</h3>
-        <Button onClick={handleConvertClick} variant="outline" size="sm">
+    <div className='space-y-4'>
+      <div className='flex items-center justify-between'>
+        <h3 className='font-semibold'>Author Information</h3>
+        <Button onClick={handleConvertClick} variant='outline' size='sm'>
           Convert
         </Button>
       </div>
 
-      <div className="flex border-b">
+      <div className='flex border-b'>
         <Button
-          variant="ghost"
+          variant='ghost'
           onClick={() => setActiveTab("input")}
           className={cn(
             "rounded-none border-b-2 border-transparent",
@@ -45,7 +39,7 @@ export function AuthorInput({
           Input
         </Button>
         <Button
-          variant="ghost"
+          variant='ghost'
           onClick={() => setActiveTab("result")}
           className={cn(
             "rounded-none border-b-2 border-transparent",
@@ -57,7 +51,7 @@ export function AuthorInput({
       </div>
 
       {activeTab === "input" && (
-        <div className="space-y-4">
+        <div className='space-y-4'>
           <textarea
             value={authorText}
             onChange={(e) => setAuthorText(e.target.value)}
@@ -66,8 +60,8 @@ export function AuthorInput({
               const text = e.clipboardData.getData("text");
               setAuthorText(text);
             }}
-            className="min-h-[150px] w-full resize-y rounded-md border p-2"
-            placeholder="Paste author information (names with affiliations and corresponding author)"
+            className='min-h-[150px] w-full resize-y rounded-md border p-2'
+            placeholder='Paste author information (names with affiliations and corresponding author)'
           />
         </div>
       )}

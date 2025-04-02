@@ -1,13 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
+
 import { AuthorOutput, TabType } from "../types";
 import { AuthorInput } from "./author-input.client";
 import { AuthorResult } from "./author-result.client";
 
 interface AuthorSectionProps {
   authorText: string;
-  setAuthorText: (text: string) => void;
+  setAuthorText: (_text: string) => void;
   authorOutput: AuthorOutput;
   handleAuthorConvert: () => void;
 }
@@ -16,12 +17,12 @@ export function AuthorSection({
   authorText,
   setAuthorText,
   authorOutput,
-  handleAuthorConvert,
-}: AuthorSectionProps) {
+  handleAuthorConvert
+}: AuthorSectionProps): React.ReactElement {
   const [activeTab, setActiveTab] = useState<TabType>("input");
 
   return (
-    <div className="space-y-4 rounded-lg border p-4">
+    <div className='space-y-4 rounded-lg border p-4'>
       <AuthorInput
         authorText={authorText}
         setAuthorText={setAuthorText}

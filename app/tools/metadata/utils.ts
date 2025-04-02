@@ -11,9 +11,9 @@ export function parseAuthors(text: string): AuthorOutput {
   const affiliationsMap: Map<number, string> = new Map();
 
   // Parse author lines - can span multiple lines until we hit a numbered affiliation
-  let authorLines: string[] = [];
+  const authorLines: string[] = [];
   let currentLine = 0;
-  
+
   // Collect author lines
   while (currentLine < lines.length && !lines[currentLine].match(/^\d+/)) {
     authorLines.push(lines[currentLine]);
@@ -23,16 +23,16 @@ export function parseAuthors(text: string): AuthorOutput {
   // Parse authors
   const authorText = authorLines.join(" ");
   const authorMatches = authorText.matchAll(/([^,]+?)((?:\d+,)*\d+)(\*)?(?:,\s*|$)/g);
-  
+
   for (const match of authorMatches) {
     const name = match[1].trim();
-    const affNumbers = match[2].split(",").map(n => parseInt(n.trim()));
+    const affNumbers = match[2].split(",").map((n) => parseInt(n.trim()));
     const isCorresponding = !!match[3];
-    
+
     authors.push({
       name,
       affiliations: affNumbers,
-      isCorresponding,
+      isCorresponding
     });
   }
 
@@ -42,7 +42,7 @@ export function parseAuthors(text: string): AuthorOutput {
     if (match) {
       affiliations.push({
         id: parseInt(match[1]),
-        text: match[2].trim(),
+        text: match[2].trim()
       });
       affiliationsMap.set(parseInt(match[1]), match[2].trim());
     }
@@ -81,9 +81,7 @@ export function cleanHtml(content: string): string {
     .replace(/<\/p>/g, "\n");
 
   // Remove extra line breaks and trim
-  cleanHtml = cleanHtml
-    .replace(/\n{3,}/g, "\n\n")
-    .trim();
+  cleanHtml = cleanHtml.replace(/\n{3,}/g, "\n\n").trim();
 
   return cleanHtml;
 }

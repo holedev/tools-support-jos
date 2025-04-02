@@ -30,48 +30,46 @@ export function ReferenceResult({ output, activeTab }: ReferenceResultProps) {
   // Count references by counting non-empty lines
   const getCountText = () => {
     if (!output.trim()) return "No references";
-    
+
     // Split by newlines and filter out empty lines
-    const lines = output.split("\n").filter(line => line.trim().length > 0);
+    const lines = output.split("\n").filter((line) => line.trim().length > 0);
     const count = lines.length;
-    
+
     return `${count} ${count === 1 ? "reference" : "references"}`;
   };
 
   return (
-    <div className="space-y-2">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <label htmlFor="output" className="text-sm font-medium">
+    <div className='space-y-2'>
+      <div className='flex items-center justify-between'>
+        <div className='flex items-center gap-2'>
+          <label htmlFor='output' className='text-sm font-medium'>
             HTML Output
           </label>
-          <span className="text-xs text-muted-foreground">
-            ({getCountText()})
-          </span>
+          <span className='text-xs text-muted-foreground'>({getCountText()})</span>
         </div>
         <Button
           onClick={copyToClipboard}
-          variant="ghost"
-          size="sm"
+          variant='ghost'
+          size='sm'
           className={cn("h-8 gap-1 px-2", copied && "text-green-500")}
         >
           {copied ? (
             <>
-              <Check className="h-4 w-4" />
-              <span className="text-xs">Copied!</span>
+              <Check className='h-4 w-4' />
+              <span className='text-xs'>Copied!</span>
             </>
           ) : (
             <>
-              <Copy className="h-4 w-4" />
-              <span className="text-xs">Copy</span>
+              <Copy className='h-4 w-4' />
+              <span className='text-xs'>Copy</span>
             </>
           )}
         </Button>
       </div>
       <textarea
-        id="output"
+        id='output'
         value={output}
-        className="bg-muted min-h-[200px] w-full rounded-md border p-2 font-mono text-sm"
+        className='bg-muted min-h-[200px] w-full rounded-md border p-2 font-mono text-sm'
         readOnly
       />
     </div>

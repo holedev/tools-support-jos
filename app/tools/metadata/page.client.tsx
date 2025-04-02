@@ -11,7 +11,7 @@ export default function MetadataPage() {
   const [authorText, setAuthorText] = useState("");
   const [authorOutput, setAuthorOutput] = useState<AuthorOutput>({
     authors: [],
-    affiliations: [],
+    affiliations: []
   });
 
   const handleAuthorConvert = () => {
@@ -20,10 +20,10 @@ export default function MetadataPage() {
   };
 
   return (
-    <div className="grid gap-6">
-      <div className="grid gap-2">
-        <h2 className="text-2xl font-semibold tracking-tight">Metadata</h2>
-        <p className="text-muted-foreground">
+    <div className='grid gap-6'>
+      <div className='grid gap-2'>
+        <h2 className='text-2xl font-semibold tracking-tight'>Metadata</h2>
+        <p className='text-muted-foreground'>
           This tool help you convert metadata from .docx, .pdf to the suitable format for OJS.
         </p>
       </div>

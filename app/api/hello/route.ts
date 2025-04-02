@@ -19,8 +19,5 @@ import { NextResponse } from "next/server";
  *                   example: Hello from the API!
  */
 export async function GET(): Promise<NextResponse> {
-  return NextResponse.json(
-    { message: "Hello from the API!" },
-    { status: 200 }
-  );
+  return NextResponse.json({ message: "Hello from the API!" }, { status: 200 });
 }

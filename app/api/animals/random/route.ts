@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getRandomAnimal, getRandomAnimals } from "@/lib/animals";
 import { z } from "zod";
+
+import { getRandomAnimal, getRandomAnimals } from "@/lib/animals";
 
 /**
  * @swagger
@@ -40,21 +41,21 @@ const QuerySchema = z.object({
   count: z
     .union([z.literal(""), z.coerce.number().min(1).max(100)])
     .optional()
-    .transform((val) => (val === "" ? undefined : val)),
+    .transform((val) => (val === "" ? undefined : val))
 });
 
-export async function GET(request: NextRequest) {
+export async function GET(request: NextRequest): Promise<NextResponse> {
   try {
     const { searchParams } = new URL(request.url);
     const result = QuerySchema.safeParse({
-      count: searchParams.get("count") ?? "",
+      count: searchParams.get("count") ?? ""
     });
 
     if (!result.success) {
       return NextResponse.json(
         {
           error: "Invalid query parameters",
-          details: "Invalid request parameters",
+          details: "Invalid request parameters"
         },
         { status: 400 }
       );
@@ -65,13 +66,10 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({
       data: animals,
-      total: Array.isArray(animals) ? animals.length : 1,
+      total: Array.isArray(animals) ? animals.length : 1
     });
   } catch (error) {
     console.error("Error in random animals API:", error);
-    return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }
