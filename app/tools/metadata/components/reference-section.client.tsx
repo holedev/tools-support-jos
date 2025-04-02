@@ -12,15 +12,10 @@ import { cleanHtml } from "../utils";
 
 interface ReferenceSectionProps {
   output: string;
-  setOutput: (output: string) => void;
-  handleConvert: () => void;
+  setOutput: (_output: string) => void;
 }
 
-export function ReferenceSection({
-  output,
-  setOutput,
-  handleConvert,
-}: ReferenceSectionProps) {
+export function ReferenceSection({ output, setOutput }: ReferenceSectionProps) {
   const [activeTab, setActiveTab] = useState<TabType>("input");
 
   const editor = useEditor({
@@ -35,9 +30,7 @@ export function ReferenceSection({
           const tempDiv = document.createElement("div");
           tempDiv.innerHTML = htmlContent;
 
-          tempDiv
-            .querySelectorAll("meta, link, style, script, o\\:p")
-            .forEach((el) => el.remove());
+          tempDiv.querySelectorAll("meta, link, style, script, o\\:p").forEach((el) => el.remove());
 
           const cleanedHtml = tempDiv.innerHTML
             .replace(/<\/?xml[^>]*>/g, "")
@@ -55,10 +48,9 @@ export function ReferenceSection({
         return false;
       },
       attributes: {
-        class:
-          "w-full min-h-[200px] p-4 rounded-md border prose prose-sm focus:outline-none",
-      },
-    },
+        class: "w-full min-h-[200px] p-4 rounded-md border prose prose-sm focus:outline-none"
+      }
+    }
   });
 
   const handleReferenceConvert = () => {
@@ -71,22 +63,18 @@ export function ReferenceSection({
   };
 
   return (
-    <div className="mt-4 space-y-4 rounded-lg border p-4">
-      <div className="flex items-center justify-between">
-        <h3 className="font-semibold">Reference Formatting</h3>
-        <Button
-          onClick={handleReferenceConvert}
-          variant="outline"
-          size="sm"
-        >
+    <div className='mt-4 space-y-4 rounded-lg border p-4'>
+      <div className='flex items-center justify-between'>
+        <h3 className='font-semibold'>Reference Formatting</h3>
+        <Button onClick={handleReferenceConvert} variant='outline' size='sm'>
           Convert
         </Button>
       </div>
 
-      <div className="space-y-4">
-        <div className="flex border-b">
+      <div className='space-y-4'>
+        <div className='flex border-b'>
           <Button
-            variant="ghost"
+            variant='ghost'
             onClick={() => setActiveTab("input")}
             className={cn(
               "rounded-none border-b-2 border-transparent",
@@ -96,7 +84,7 @@ export function ReferenceSection({
             Input
           </Button>
           <Button
-            variant="ghost"
+            variant='ghost'
             onClick={() => setActiveTab("result")}
             className={cn(
               "rounded-none border-b-2 border-transparent",
@@ -108,7 +96,7 @@ export function ReferenceSection({
         </div>
 
         {activeTab === "input" && (
-          <div className="space-y-4">
+          <div className='space-y-4'>
             <ReferenceToolbar editor={editor} />
             <EditorContent editor={editor} />
           </div>

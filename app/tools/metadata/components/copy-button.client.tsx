@@ -1,18 +1,18 @@
 "use client";
 
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
 import { Check, Copy } from "lucide-react";
+import React, { useState } from "react";
+
+import { Button } from "@/components/ui/button";
 
 interface CopyButtonProps {
   text: string;
-  fieldId: string;
 }
 
-export function CopyButton({ text, fieldId }: CopyButtonProps) {
+export function CopyButton({ text }: CopyButtonProps): React.ReactElement {
   const [copied, setCopied] = useState(false);
 
-  const handleCopy = async () => {
+  const handleCopy = async (): Promise<void> => {
     try {
       await navigator.clipboard.writeText(text);
       setCopied(true);
@@ -23,17 +23,8 @@ export function CopyButton({ text, fieldId }: CopyButtonProps) {
   };
 
   return (
-    <Button
-      onClick={handleCopy}
-      variant="ghost"
-      size="sm"
-      className="h-6 w-6 p-0"
-    >
-      {copied ? (
-        <Check className="h-3 w-3 text-green-500" />
-      ) : (
-        <Copy className="h-3 w-3" />
-      )}
+    <Button onClick={handleCopy} variant='ghost' size='sm' className='h-6 w-6 p-0'>
+      {copied ? <Check className='h-3 w-3 text-green-500' /> : <Copy className='h-3 w-3' />}
     </Button>
   );
 }
