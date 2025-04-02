@@ -37,12 +37,12 @@ const Configuration = [
     rules: {
       "react-hooks/exhaustive-deps": 0,
       "no-console": ["error", { allow: ["info", "warn", "error"] }],
-      "no-unused-vars": [
+      "no-duplicate-imports": "error",
+      "@typescript-eslint/no-require-imports": 0,
+      "@typescript-eslint/no-unused-vars": [
         "error",
         { argsIgnorePattern: "^_", varsIgnorePattern: "^_", caughtErrorsIgnorePattern: "^_" }
-      ],
-      "no-duplicate-imports": "error",
-      "@typescript-eslint/no-require-imports": 0
+      ]
     }
   }
 ];

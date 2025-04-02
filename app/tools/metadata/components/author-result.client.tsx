@@ -17,8 +17,8 @@ export function AuthorResult({ authorOutput, activeTab }: AuthorResultProps) {
     <div className='space-y-2 text-sm'>
       <h4 className='font-medium'>Authors:</h4>
       {authorOutput.authors.map((author, i) => {
-        const authorId = `author-${i}`;
-        const emailId = `email-${i}`;
+        const _authorId = `author-${i}`;
+        const _emailId = `email-${i}`;
 
         return (
           <div key={i} className='space-y-2 border-b pb-4 pl-4 last:border-0'>
@@ -29,7 +29,7 @@ export function AuthorResult({ authorOutput, activeTab }: AuthorResultProps) {
                 <div>
                   <span className='text-muted-foreground'>Name:</span> {author.name}
                 </div>
-                <CopyButton text={author.name} _fieldId={authorId} />
+                <CopyButton text={author.name} />
               </div>
 
               {author.affiliations.map((affId) => {
@@ -41,7 +41,7 @@ export function AuthorResult({ authorOutput, activeTab }: AuthorResultProps) {
                     <div>
                       <span className='text-muted-foreground'>Affiliation {affId}:</span> {aff.text}
                     </div>
-                    <CopyButton text={aff.text} _fieldId={`affiliation-${affId}`} />
+                    <CopyButton text={aff.text} />
                   </div>
                 );
               })}
@@ -52,7 +52,7 @@ export function AuthorResult({ authorOutput, activeTab }: AuthorResultProps) {
                     <span className='text-muted-foreground'>Email:</span> {author.email}
                     <span className='ml-2 text-xs text-blue-700'>(Corresponding Author)</span>
                   </div>
-                  <CopyButton text={author.email} _fieldId={emailId} />
+                  <CopyButton text={author.email} />
                 </div>
               )}
             </div>

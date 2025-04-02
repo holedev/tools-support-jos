@@ -40,7 +40,6 @@ export default function MetadataPage() {
       <ReferenceSection
         output={output}
         setOutput={setOutput}
-        handleConvert={() => {}} // Handled internally in ReferenceSection
       />
     </div>
   );
