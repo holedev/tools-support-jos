@@ -1,30 +1,40 @@
-# Next.js TypeScript Template with Shadcn UI
+# Tools Support JOS
 
-A modern Next.js project template featuring TypeScript, Shadcn UI, and best practices for building scalable web applications.
+A modern Next.js application designed to provide helpful tools for academic publishing, particularly focused on formatting metadata for Open Journal Systems (OJS).
+
+## Project Overview
+
+This application offers user-friendly tools to streamline academic publishing workflows:
+
+- **Metadata Conversion Tool**: Convert author information, keywords, and references from common formats (.docx, .pdf) to OJS-compatible formats
+- **API Documentation**: Comprehensive Swagger documentation for all API endpoints
+- **Modern UI**: Clean, accessible interface built with Shadcn UI components
 
 ## Features
 
-- ⚡ [Next.js App Router](https://nextjs.org/docs/app) for optimal performance and routing
-- 🎨 [Shadcn UI](https://ui.shadcn.com/) for beautiful, accessible components
-- 📝 TypeScript for type safety and better developer experience
-- 🚀 Server Components by default for improved performance
-- 🔄 API routes with Swagger documentation
-- 🎯 ESLint and Prettier for code quality
-- 🛠️ Modern project structure following best practices
+- ⚡ **Next.js 15 App Router**: Leveraging the latest Next.js features for optimal performance
+- 🎨 **Shadcn UI Components**: Beautiful, accessible UI components
+- 📝 **TypeScript**: Full type safety throughout the codebase
+- 🚀 **Server Components**: Optimized rendering with React Server Components
+- 🔄 **API Routes with Swagger**: Well-documented API endpoints
+- 🎯 **Responsive Design**: Mobile-friendly interface
+- 🛠️ **Modern Development Setup**: ESLint, Prettier, and TypeScript for code quality
 
 ## Tech Stack
 
-- **Framework:** [Next.js 15](https://nextjs.org/)
-- **Styling:** [Tailwind CSS](https://tailwindcss.com/) with Shadcn UI
-- **Language:** [TypeScript](https://www.typescriptlang.org/)
-- **Package Manager:** [pnpm](https://pnpm.io/)
+- **Framework**: [Next.js 15](https://nextjs.org/)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/) with Shadcn UI
+- **Language**: [TypeScript](https://www.typescriptlang.org/)
+- **Package Manager**: [pnpm](https://pnpm.io/)
+- **Documentation**: Swagger UI for API documentation
+- **Editor Integration**: TinyMCE for rich text editing
 
 ## Getting Started
 
 ### Prerequisites
 
 - Node.js 18+
-- pnpm (recommended package manager)
+- pnpm 10+ (recommended package manager)
 
 ### Installation
 
@@ -33,7 +43,7 @@ A modern Next.js project template featuring TypeScript, Shadcn UI, and best prac
 git clone <your-repo-url>
 
 # Navigate to project directory
-cd <project-name>
+cd tools-support-jos
 
 # Install dependencies
 pnpm install
@@ -42,63 +52,85 @@ pnpm install
 ### Development
 
 ```bash
-# Start development server
+# Start development server with Turbopack
 pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the application.
+
+### Build for Production
+
+```bash
+# Create production build
+pnpm build
+
+# Start production server
+pnpm start
+```
+
+### Linting and Formatting
+
+```bash
+# Run ESLint
+pnpm lint
+
+# Fix ESLint issues
+pnpm lint:fix
+
+# Check formatting with Prettier
+pnpm format
+
+# Fix formatting issues
+pnpm format:fix
+```
 
 ## Project Structure
 
 ```
-├── app/                   # App router directories
-│   ├── api/              # API routes with Swagger documentation
-│   ├── (routes)/         # App routes and pages
-│   └── layout.tsx        # Root layout
-├── components/           # Shared components
-│   └── ui/              # UI components
-├── lib/                  # Utilities and helpers
-└── public/              # Static assets
+├── app/                   # App Router directories
+│   ├── api/               # API routes with Swagger documentation
+│   │   ├── animals/       # Animal API endpoints
+│   │   ├── docs/          # API documentation
+│   │   └── hello/         # Hello world API example
+│   ├── docs/              # Documentation pages
+│   ├── tools/             # Tools section
+│   │   └── metadata/      # Metadata conversion tools
+│   │       ├── components/# Tool-specific components
+│   │       └── utils.ts   # Utility functions for metadata processing
+│   ├── layout.tsx         # Root layout
+│   └── page.tsx           # Home page
+├── components/            # Shared components
+│   ├── ui/                # UI components from Shadcn
+│   └── app-sidebar.tsx    # Application sidebar navigation
+├── lib/                   # Utilities and helpers
+├── public/                # Static assets
+└── memory-bank/           # Project documentation and context
 ```
 
-## Best Practices
+## Metadata Tools
 
-### Components
+The main feature of this application is the metadata conversion tool designed for academic publishing:
 
-- Use Server Components by default
-- Mark client components explicitly with 'use client'
-- Wrap client components in Suspense with fallback
-- Use dynamic loading for non-critical components
-- Implement proper error boundaries
+### Author Information
 
-### Performance
+- Parse and format author names and affiliations from various formats
+- Generate properly formatted author metadata for OJS submission
 
-- Optimize images with WebP format and proper sizing
-- Minimize use of useEffect and setState
-- Favor Server Components (RSC) where possible
-- Implement proper caching strategies
+### Keywords
 
-### API Routes
+- Extract and format keywords from documents
+- Prepare keywords in the format required by academic publishing platforms
 
-- Include Swagger documentation for all API routes
-- Implement proper error handling
-- Use appropriate HTTP methods and status codes
+### References
 
-### Forms and Validation
+- Format bibliographic references according to academic standards
+- Ensure compatibility with citation systems
 
-- Use Zod for form validation
-- Implement server-side validation
-- Handle form errors appropriately
-- Show loading states during form submission
+## API Documentation
 
-### State Management
+The application includes Swagger documentation for all API endpoints, accessible at `/api/docs`.
 
-- Minimize client-side state
-- Use React Context sparingly
-- Prefer server state when possible
-- Implement proper loading states
-
-## Development Guidelines
+## Contributing
 
 1. **Branching:**
 
