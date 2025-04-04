@@ -15,4 +15,8 @@ export interface AuthorOutput {
   affiliations: Affiliation[];
 }
 
+export interface KeywordOutput {
+  keywords: string[];
+}
+
 export type TabType = "input" | "result";

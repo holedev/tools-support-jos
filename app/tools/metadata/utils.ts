@@ -1,4 +1,4 @@
-import { Author, Affiliation, AuthorOutput } from "./types";
+import { Author, Affiliation, AuthorOutput, KeywordOutput } from "./types";
 
 export function parseAuthors(text: string): AuthorOutput {
   const lines = text
@@ -84,4 +84,14 @@ export function cleanHtml(content: string): string {
   cleanHtml = cleanHtml.replace(/\n{3,}/g, "\n\n").trim();
 
   return cleanHtml;
+}
+
+export function parseKeywords(text: string): KeywordOutput {
+  // Split by semicolon and trim each keyword
+  const keywords = text
+    .split(";")
+    .map(keyword => keyword.trim())
+    .filter(Boolean);
+  
+  return { keywords };
 }

@@ -2,9 +2,10 @@
 
 import { useState } from "react";
 import { AuthorSection } from "./components/author-section.client";
+import { KeywordSection } from "./components/keyword-section.client";
 import { ReferenceSection } from "./components/reference-section.client";
-import { parseAuthors } from "./utils";
-import { AuthorOutput } from "./types";
+import { AuthorOutput, KeywordOutput } from "./types";
+import { parseAuthors, parseKeywords } from "./utils";
 
 export default function MetadataPage() {
   const [output, setOutput] = useState("");
@@ -13,10 +14,19 @@ export default function MetadataPage() {
     authors: [],
     affiliations: []
   });
+  const [keywordText, setKeywordText] = useState("");
+  const [keywordOutput, setKeywordOutput] = useState<KeywordOutput>({
+    keywords: []
+  });
 
   const handleAuthorConvert = () => {
     const result = parseAuthors(authorText);
     setAuthorOutput(result);
+  };
+
+  const handleKeywordConvert = () => {
+    const result = parseKeywords(keywordText);
+    setKeywordOutput(result);
   };
 
   return (
@@ -36,11 +46,16 @@ export default function MetadataPage() {
         handleAuthorConvert={handleAuthorConvert}
       />
 
-      {/* Reference Formatting Section */}
-      <ReferenceSection
-        output={output}
-        setOutput={setOutput}
+      {/* Keyword Section */}
+      <KeywordSection
+        keywordText={keywordText}
+        setKeywordText={setKeywordText}
+        keywordOutput={keywordOutput}
+        handleKeywordConvert={handleKeywordConvert}
       />
+
+      {/* Reference Formatting Section */}
+      <ReferenceSection output={output} setOutput={setOutput} />
     </div>
   );
 }
