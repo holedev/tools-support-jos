@@ -48,18 +48,21 @@ if ! grep -q "HISTFILE" "$ZSHRC_PATH"; then
   echo "export HISTFILE=$HISTFILE_PATH" >> "$ZSHRC_PATH"
 fi
 
-echo "==> Install latest corepack ..."
-sudo npm install -g corepack@latest
-
-echo "==> Enable pnpm ..."
-corepack prepare --activate
-
 echo "==> Install uv (use for MCP server)..."
 if ! command -v uv &> /dev/null; then
   curl -LsSf https://astral.sh/uv/install.sh | sh
 else
   echo "==> uv already installed."
 fi
+
+echo "==> Install latest corepack ..."
+sudo npm install -g corepack@latest
+
+echo "==> Enable pnpm ..."
+corepack prepare --activate
+
+echo "==> Change owner of node_modules ..."
+sudo chown -R $(whoami):$(whoami) node_modules
 
 echo "==> Config git credentail ..."
 git config --global user.name "devcontainer"

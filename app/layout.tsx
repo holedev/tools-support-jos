@@ -31,7 +31,7 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} bg-background min-h-screen antialiased`}>
         <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
           <div className='relative flex min-h-screen'>
-            <SidebarProvider>
+            <SidebarProvider defaultOpen={false}>
               <AppSidebar />
               <main className='flex-1 px-4 py-2'>
                 <SidebarTrigger />

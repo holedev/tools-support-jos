@@ -3,6 +3,7 @@ import { ChevronDownIcon, FileTextIcon } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
@@ -11,6 +12,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem
 } from "@/components/ui/sidebar";
+import { ThemeToggle } from "./theme-toggle";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./ui/collapsible";
 import Link from "next/link";
 
@@ -59,6 +61,9 @@ export function AppSidebar() {
           </SidebarGroup>
         </Collapsible>
       </SidebarContent>
+      <SidebarFooter className="px-4 py-2 flex justify-center">
+        <ThemeToggle />
+      </SidebarFooter>
     </Sidebar>
   );
 }

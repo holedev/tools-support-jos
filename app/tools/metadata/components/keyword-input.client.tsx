@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { TabType } from "../types";
+import { PasteButton } from "./paste-button.client";
 
 interface KeywordInputProps {
   keywordText: string;
@@ -28,9 +29,12 @@ export function KeywordInput({
     <div className='space-y-4'>
       <div className='flex items-center justify-between'>
         <h3 className='font-semibold'>Keywords</h3>
-        <Button onClick={handleConvertClick} variant='outline' size='sm'>
-          Convert
-        </Button>
+        <div className="space-x-2">
+          <PasteButton onPaste={setKeywordText} format="plain" />
+          <Button onClick={handleConvertClick} variant='outline' size='sm'>
+            Convert
+          </Button>
+        </div>
       </div>
 
       <div className='flex border-b'>
