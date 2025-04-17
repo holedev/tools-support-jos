@@ -67,7 +67,7 @@ export function SMTPForm() {
       }
     } catch (error) {
       toast.error('Error', {
-        description: 'Failed to check SMTP configuration',
+        description: 'Failed to check SMTP configuration ' + error,
         action: {
           label: "Close",
           onClick: () => {},
