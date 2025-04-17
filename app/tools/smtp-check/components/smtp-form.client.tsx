@@ -27,7 +27,14 @@ import {
   AlertTitle,
 } from "@/components/ui/alert"
 
-const ConnectionFields = ({ config, setConfig, showPassword, setShowPassword }: any) => (
+interface ConnectionFieldsProps {
+  config: SMTPConfig;
+  setConfig: (config: SMTPConfig) => void;
+  showPassword: boolean;
+  setShowPassword: (show: boolean) => void;
+}
+
+const ConnectionFields = ({ config, setConfig, showPassword, setShowPassword }: ConnectionFieldsProps) => (
   <>
     <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
       <div className="space-y-2">
@@ -141,7 +148,9 @@ export function SMTPForm() {
         throw new Error('From and To email addresses are required for sending test email')
       }
 
-      const requestData: Record<string, any> = {
+      type RequestData = SMTPConfig & { mode: 'check' | 'send' };
+      
+      const requestData: RequestData = {
         host: config.host,
         port: parseInt(config.port.toString()),
         secure: config.secure,
