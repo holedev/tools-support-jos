@@ -83,6 +83,7 @@ const configSchema = z.object({
   password: z.string().optional(),
   from: z.string().email().optional(),
   to: z.string().email().optional(),
+  mode: z.enum(['check', 'send']).default('check'),
 })
 
 export async function POST(request: NextRequest) {
@@ -111,8 +112,8 @@ export async function POST(request: NextRequest) {
       
       const connectionTime = Date.now() - startTime
 
-      // Send test email if from and to addresses are provided
-      if (validatedConfig.from && validatedConfig.to) {
+      // Send test email only in send mode and if addresses are provided
+      if (validatedConfig.mode === 'send' && validatedConfig.from && validatedConfig.to) {
         await transport.sendMail({
           from: validatedConfig.from,
           to: validatedConfig.to,
@@ -124,7 +125,7 @@ export async function POST(request: NextRequest) {
       
       return Response.json({
         success: true,
-        message: validatedConfig.from && validatedConfig.to
+        message: validatedConfig.mode === 'send'
           ? 'Successfully connected to SMTP server and sent test email'
           : 'Successfully connected to SMTP server',
         details: {

@@ -33,7 +33,7 @@ export function SMTPForm() {
     to: ''
   })
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleAction = async (e: React.FormEvent, mode: 'check' | 'send') => {
     e.preventDefault()
     setIsLoading(true)
 
@@ -43,7 +43,7 @@ export function SMTPForm() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(config),
+        body: JSON.stringify({ ...config, mode }),
       })
 
       const result: SMTPCheckResult = await res.json()
@@ -117,7 +117,7 @@ export function SMTPForm() {
           </Alert>
         )}
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={(e) => e.preventDefault()}>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <div className="space-y-2">
               <Label htmlFor="host">Host</Label>
@@ -208,12 +208,17 @@ export function SMTPForm() {
             </div>
 
             <div className="flex gap-2">
-              <Button type="submit" disabled={isLoading}>
+              <Button
+                type="button"
+                onClick={(e) => handleAction(e, 'check')}
+                disabled={isLoading}
+              >
                 {isLoading ? 'Checking...' : 'Check Connection'}
               </Button>
               {config.from && config.to && (
                 <Button
-                  type="submit"
+                  type="button"
+                  onClick={(e) => handleAction(e, 'send')}
                   disabled={isLoading}
                   className="bg-green-600 hover:bg-green-700"
                 >
