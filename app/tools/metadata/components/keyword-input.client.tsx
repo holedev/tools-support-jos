@@ -13,13 +13,7 @@ interface KeywordInputProps {
   onConvert: () => void;
 }
 
-export function KeywordInput({ 
-  keywordText, 
-  setKeywordText, 
-  activeTab, 
-  setActiveTab, 
-  onConvert 
-}: KeywordInputProps) {
+export function KeywordInput({ keywordText, setKeywordText, activeTab, setActiveTab, onConvert }: KeywordInputProps) {
   const handleConvertClick = () => {
     onConvert();
     setActiveTab("result");
@@ -29,8 +23,8 @@ export function KeywordInput({
     <div className='space-y-4'>
       <div className='flex items-center justify-between'>
         <h3 className='font-semibold'>Keywords</h3>
-        <div className="space-x-2">
-          <PasteButton onPaste={setKeywordText} format="plain" />
+        <div className='space-x-2'>
+          <PasteButton onPaste={setKeywordText} format='plain' />
           <Button onClick={handleConvertClick} variant='outline' size='sm'>
             Convert
           </Button>

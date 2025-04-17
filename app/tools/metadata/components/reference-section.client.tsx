@@ -67,9 +67,9 @@ export function ReferenceSection({ output, setOutput }: ReferenceSectionProps) {
     <div className='mt-4 space-y-4 rounded-lg border p-4'>
       <div className='flex items-center justify-between'>
         <h3 className='font-semibold'>Reference Formatting</h3>
-        <div className="space-x-2">
+        <div className='space-x-2'>
           <PasteButton
-            format="rich"
+            format='rich'
             onPaste={(content) => {
               if (!editor) return;
               editor.commands.setContent(content);

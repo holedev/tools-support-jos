@@ -1,4 +1,4 @@
-import { ChevronDownIcon, FileTextIcon } from "lucide-react";
+import { ChevronDownIcon, FileTextIcon, MailCheckIcon } from "lucide-react";
 
 import {
   Sidebar,
@@ -22,6 +22,11 @@ const items = [
     title: "Metadata",
     url: "/tools/metadata",
     icon: FileTextIcon
+  },
+  {
+    title: "SMTP Check",
+    url: "/tools/smtp-check",
+    icon: MailCheckIcon
   }
 ];
 
@@ -46,12 +51,12 @@ export function AppSidebar() {
               <SidebarGroupContent>
                 <SidebarMenu>
                   {items.map((item) => (
-                    <SidebarMenuItem key={item.title} className='py-2'>
+                    <SidebarMenuItem key={item.title} className=''>
                       <SidebarMenuButton asChild>
-                        <a href={item.url}>
+                        <Link href={item.url}>
                           <item.icon />
                           <span>{item.title}</span>
-                        </a>
+                        </Link>
                       </SidebarMenuButton>
                     </SidebarMenuItem>
                   ))}
@@ -61,7 +66,7 @@ export function AppSidebar() {
           </SidebarGroup>
         </Collapsible>
       </SidebarContent>
-      <SidebarFooter className="px-4 py-2 flex justify-center">
+      <SidebarFooter className='px-4 py-2 flex justify-center'>
         <ThemeToggle />
       </SidebarFooter>
     </Sidebar>

@@ -8,7 +8,7 @@ import { Button } from "./ui/button";
 // Static values for button text and labels
 const BUTTON_LABELS = {
   srOnly: "Toggle theme",
-  ariaLabel: "Toggle between light and dark theme",
+  ariaLabel: "Toggle between light and dark theme"
 } as const;
 
 // Component for toggling between light and dark themes
@@ -22,26 +22,22 @@ export function ThemeToggle() {
 
   if (!mounted) {
     return (
-      <Button variant="ghost" size="icon">
-        <Sun className="h-5 w-5" />
-        <span className="sr-only">{BUTTON_LABELS.srOnly}</span>
+      <Button variant='ghost' size='icon'>
+        <Sun className='h-5 w-5' />
+        <span className='sr-only'>{BUTTON_LABELS.srOnly}</span>
       </Button>
     );
   }
 
   return (
     <Button
-      variant="ghost"
-      size="icon"
+      variant='ghost'
+      size='icon'
       onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
       aria-label={BUTTON_LABELS.ariaLabel}
     >
-      {theme === "dark" ? (
-        <Sun className="h-5 w-5" />
-      ) : (
-        <Moon className="h-5 w-5" />
-      )}
-      <span className="sr-only">{BUTTON_LABELS.srOnly}</span>
+      {theme === "dark" ? <Sun className='h-5 w-5' /> : <Moon className='h-5 w-5' />}
+      <span className='sr-only'>{BUTTON_LABELS.srOnly}</span>
     </Button>
   );
 }

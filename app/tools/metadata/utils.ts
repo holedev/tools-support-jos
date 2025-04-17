@@ -90,8 +90,8 @@ export function parseKeywords(text: string): KeywordOutput {
   // Split by semicolon and trim each keyword
   const keywords = text
     .split(";")
-    .map(keyword => keyword.trim())
+    .map((keyword) => keyword.trim())
     .filter(Boolean);
-  
+
   return { keywords };
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { FileCode } from "lucide-react";
+import { FileCode, MailCheck } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
@@ -11,6 +11,13 @@ const tools = [
       "Generate and manage metadata for your projects. Create standardized metadata entries with author information and references.",
     icon: <FileCode className='h-6 w-6' />,
     href: "/tools/metadata"
+  },
+  {
+    name: "SMTP Check",
+    description: 
+      "Test and verify SMTP server configurations. Supports Gmail SMTP with both regular and app password authentication.",
+    icon: <MailCheck className='h-6 w-6' />,
+    href: "/tools/smtp-check"
   }
 ];
 

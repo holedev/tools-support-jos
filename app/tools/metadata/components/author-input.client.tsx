@@ -23,8 +23,8 @@ export function AuthorInput({ authorText, setAuthorText, activeTab, setActiveTab
     <div className='space-y-4'>
       <div className='flex items-center justify-between'>
         <h3 className='font-semibold'>Author Information</h3>
-        <div className="space-x-2">
-          <PasteButton onPaste={setAuthorText} format="plain" />
+        <div className='space-x-2'>
+          <PasteButton onPaste={setAuthorText} format='plain' />
           <Button onClick={handleConvertClick} variant='outline' size='sm'>
             Convert
           </Button>
