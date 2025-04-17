@@ -75,23 +75,36 @@ import { type SMTPConfig } from '@/app/tools/smtp-check/types'
  *                       description: Available authentication methods
  */
 
-const configSchema = z.object({
-  host: z.string().min(1),
-  port: z.number().int().positive(),
+const checkSchema = z.object({
+  host: z.string().min(1, "Host is required"),
+  port: z.coerce.number().int().positive("Port must be a positive number"),
   secure: z.boolean().default(true),
-  username: z.string().optional(),
-  password: z.string().optional(),
-  from: z.string().email().optional(),
-  to: z.string().email().optional(),
-  mode: z.enum(['check', 'send']).default('check'),
+  username: z.string().min(1, "Username is required"),
+  password: z.string().min(1, "Password is required"),
+  mode: z.literal('check')
 })
+
+const sendSchema = z.object({
+  host: z.string().min(1, "Host is required"),
+  port: z.coerce.number().int().positive("Port must be a positive number"),
+  secure: z.boolean().default(true),
+  username: z.string().min(1, "Username is required"),
+  password: z.string().min(1, "Password is required"),
+  mode: z.literal('send'),
+  from: z.string().email("Valid sender email is required"),
+  to: z.string().email("Valid recipient email is required"),
+})
+
+const configSchema = z.discriminatedUnion('mode', [checkSchema, sendSchema])
 
 export async function POST(request: NextRequest) {
   try {
     const config: SMTPConfig = await request.json()
     
     // Validate request body
-    const validatedConfig = configSchema.parse(config)
+    const validatedConfig = await configSchema.parseAsync(config).catch((err) => {
+      throw new Error(err.errors[0]?.message || 'Invalid request data')
+    })
     
     const startTime = Date.now()
     
@@ -147,7 +160,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     return Response.json({
       success: false,
-      message: 'Invalid request data',
+      message: error instanceof Error ? error.message : 'Invalid request data',
       details: {
         error: error instanceof Error ? error.message : 'Unknown error',
       },

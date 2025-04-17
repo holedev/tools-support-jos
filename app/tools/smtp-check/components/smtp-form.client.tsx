@@ -10,6 +10,12 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/components/ui/tabs"
 import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
 import { toast } from 'sonner'
@@ -20,6 +26,82 @@ import {
   AlertDescription,
   AlertTitle,
 } from "@/components/ui/alert"
+
+const ConnectionFields = ({ config, setConfig, showPassword, setShowPassword }: any) => (
+  <>
+    <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+      <div className="space-y-2">
+        <Label htmlFor="host">Host</Label>
+        <Input
+          id="host"
+          placeholder="smtp.gmail.com"
+          value={config.host}
+          onChange={(e) => setConfig({ ...config, host: e.target.value })}
+          required
+        />
+      </div>
+      
+      <div className="space-y-2">
+        <Label htmlFor="port">Port</Label>
+        <Input
+          id="port"
+          type="number"
+          placeholder="465"
+          value={config.port}
+          onChange={(e) => {
+            const value = e.target.value
+            const port = value === '' ? 0 : parseInt(value)
+            setConfig({ ...config, port })
+          }}
+          required
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="username">Username</Label>
+        <Input
+          id="username"
+          placeholder="your.email@gmail.com"
+          value={config.username || ''}
+          onChange={(e) => setConfig({ ...config, username: e.target.value })}
+          required
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="password">Password</Label>
+        <div className="relative">
+          <Input
+            id="password"
+            type={showPassword ? "text" : "password"}
+            placeholder="Email password or app password"
+            value={config.password || ''}
+            onChange={(e) => setConfig({ ...config, password: e.target.value })}
+            required
+          />
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            className="absolute right-2 top-1/2 -translate-y-1/2"
+            onClick={() => setShowPassword(!showPassword)}
+          >
+            {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+          </Button>
+        </div>
+      </div>
+    </div>
+
+    <div className="flex items-center space-x-2">
+      <Switch
+        id="secure"
+        checked={config.secure}
+        onCheckedChange={(checked: boolean) => setConfig({ ...config, secure: checked })}
+      />
+      <Label htmlFor="secure">Use SSL/TLS (recommended)</Label>
+    </div>
+  </>
+)
 
 export function SMTPForm() {
   const [isLoading, setIsLoading] = useState(false)
@@ -33,44 +115,86 @@ export function SMTPForm() {
     to: ''
   })
 
+  const validateConfig = () => {
+    if (!config.host?.trim()) {
+      throw new Error('Host is required')
+    }
+    const port = parseInt(config.port.toString())
+    if (isNaN(port) || port <= 0) {
+      throw new Error('Port must be a positive number')
+    }
+    return true
+  }
+
   const handleAction = async (e: React.FormEvent, mode: 'check' | 'send') => {
     e.preventDefault()
     setIsLoading(true)
 
     try {
+      validateConfig()
+
+      if (!config.username?.trim() || !config.password?.trim()) {
+        throw new Error('Username and password are required')
+      }
+
+      if (mode === 'send' && (!config.from || !config.to)) {
+        throw new Error('From and To email addresses are required for sending test email')
+      }
+
+      const requestData: Record<string, any> = {
+        host: config.host,
+        port: parseInt(config.port.toString()),
+        secure: config.secure,
+        mode
+      }
+
+      if (config.username) {
+        requestData.username = config.username
+        if (config.password) {
+          requestData.password = config.password
+        }
+      }
+
+      if (mode === 'send') {
+        requestData.from = config.from
+        requestData.to = config.to
+      }
+
       const res = await fetch('/api/tools/smtp-check', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ ...config, mode }),
+        body: JSON.stringify(requestData),
       })
 
       const result: SMTPCheckResult = await res.json()
 
       if (result.success) {
-        toast.success('SMTP Check Successful', {
+        toast.success(mode === 'check' ? 'Connection Successful' : 'Test Email Sent', {
           description: result.message,
           action: {
-            label: "Close",
-            onClick: () => {},
+            label: "Copy",
+            onClick: () => navigator.clipboard.writeText(result.message),
           }
         })
       } else {
-        toast.error('SMTP Check Failed', {
-          description: result.message,
+        const errorMessage = result.details?.error || result.message
+        toast.error(mode === 'check' ? 'Connection Failed' : 'Failed to Send Email', {
+          description: errorMessage,
           action: {
-            label: "Close",
-            onClick: () => {},
+            label: "Copy Error",
+            onClick: () => navigator.clipboard.writeText(errorMessage),
           }
         })
       }
     } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to complete operation'
       toast.error('Error', {
-        description: 'Failed to check SMTP configuration ' + error,
+        description: errorMessage,
         action: {
-          label: "Close",
-          onClick: () => {},
+          label: "Copy Error",
+          onClick: () => navigator.clipboard.writeText(errorMessage),
         }
       })
     } finally {
@@ -83,7 +207,7 @@ export function SMTPForm() {
       <CardHeader>
         <CardTitle>SMTP Server Check</CardTitle>
         <CardDescription>
-          Verify your SMTP server configuration (defaults to Gmail SMTP)
+          Test SMTP server connection and send test emails
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -117,97 +241,21 @@ export function SMTPForm() {
           </Alert>
         )}
 
-        <form onSubmit={(e) => e.preventDefault()}>
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            <div className="space-y-2">
-              <Label htmlFor="host">Host</Label>
-              <Input
-                id="host"
-                placeholder="smtp.gmail.com"
-                value={config.host}
-                onChange={(e) => setConfig({ ...config, host: e.target.value })}
-                required
-              />
-            </div>
+        <Tabs defaultValue="connection" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="connection">Test Connection</TabsTrigger>
+            <TabsTrigger value="email">Send Test Email</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="connection" className="space-y-6">
+            <ConnectionFields 
+              config={config} 
+              setConfig={setConfig}
+              showPassword={showPassword}
+              setShowPassword={setShowPassword}
+            />
             
-            <div className="space-y-2">
-              <Label htmlFor="port">Port</Label>
-              <Input
-                id="port"
-                type="number"
-                placeholder="465"
-                value={config.port}
-                onChange={(e) => setConfig({ ...config, port: parseInt(e.target.value) })}
-                required
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="username">Username (Optional)</Label>
-              <Input
-                id="username"
-                placeholder="your.email@gmail.com"
-                value={config.username || ''}
-                onChange={(e) => setConfig({ ...config, username: e.target.value })}
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="password">Password (Optional)</Label>
-              <div className="relative">
-                <Input
-                  id="password"
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Email password or app password"
-                  value={config.password || ''}
-                  onChange={(e) => setConfig({ ...config, password: e.target.value })}
-                />
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="icon"
-                  className="absolute right-2 top-1/2 -translate-y-1/2"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                </Button>
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="from">From Email</Label>
-              <Input
-                id="from"
-                type="email"
-                placeholder="sender@example.com"
-                value={config.from || ''}
-                onChange={(e) => setConfig({ ...config, from: e.target.value })}
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="to">To Email</Label>
-              <Input
-                id="to"
-                type="email"
-                placeholder="recipient@example.com"
-                value={config.to || ''}
-                onChange={(e) => setConfig({ ...config, to: e.target.value })}
-              />
-            </div>
-          </div>
-
-          <div className="mt-6 flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <Switch
-                id="secure"
-                checked={config.secure}
-                onCheckedChange={(checked: boolean) => setConfig({ ...config, secure: checked })}
-              />
-              <Label htmlFor="secure">Use SSL/TLS (recommended)</Label>
-            </div>
-
-            <div className="flex gap-2">
+            <div className="flex justify-end">
               <Button
                 type="button"
                 onClick={(e) => handleAction(e, 'check')}
@@ -215,19 +263,55 @@ export function SMTPForm() {
               >
                 {isLoading ? 'Checking...' : 'Check Connection'}
               </Button>
-              {config.from && config.to && (
-                <Button
-                  type="button"
-                  onClick={(e) => handleAction(e, 'send')}
-                  disabled={isLoading}
-                  className="bg-green-600 hover:bg-green-700"
-                >
-                  {isLoading ? 'Sending...' : 'Send Test Email'}
-                </Button>
-              )}
             </div>
-          </div>
-        </form>
+          </TabsContent>
+
+          <TabsContent value="email" className="space-y-6">
+            <ConnectionFields 
+              config={config} 
+              setConfig={setConfig}
+              showPassword={showPassword}
+              setShowPassword={setShowPassword}
+            />
+
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+              <div className="space-y-2">
+                <Label htmlFor="from">From Email</Label>
+                <Input
+                  id="from"
+                  type="email"
+                  placeholder="sender@example.com"
+                  value={config.from || ''}
+                  onChange={(e) => setConfig({ ...config, from: e.target.value })}
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="to">To Email</Label>
+                <Input
+                  id="to"
+                  type="email"
+                  placeholder="recipient@example.com"
+                  value={config.to || ''}
+                  onChange={(e) => setConfig({ ...config, to: e.target.value })}
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="flex justify-end">
+              <Button
+                type="button"
+                onClick={(e) => handleAction(e, 'send')}
+                disabled={isLoading || !config.from || !config.to}
+                className="bg-green-600 hover:bg-green-700"
+              >
+                {isLoading ? 'Sending...' : 'Send Test Email'}
+              </Button>
+            </div>
+          </TabsContent>
+        </Tabs>
       </CardContent>
     </Card>
   )
