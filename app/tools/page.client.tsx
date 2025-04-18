@@ -1,6 +1,6 @@
 "use client";
 
-import { FileCode, MailCheck } from "lucide-react";
+import { FileCode, MailCheck, Calendar } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
@@ -18,6 +18,13 @@ const tools = [
       "Test and verify SMTP server configurations. Supports Gmail SMTP with both regular and app password authentication.",
     icon: <MailCheck className='h-6 w-6' />,
     href: "/tools/smtp-check"
+  },
+  {
+    name: "Publication Frequency",
+    description:
+      "View and analyze publication frequency patterns across different journals. Track monthly publication schedules and trends.",
+    icon: <Calendar className='h-6 w-6' />,
+    href: "/tools/publication"
   }
 ];
 
@@ -29,7 +36,7 @@ export function ToolsPage() {
         <p className='text-muted-foreground text-lg'>Explore our collection of development tools and utilities</p>
       </div>
 
-      <div className='grid gap-8'>
+      <div className='flex gap-8'>
         {tools.map((tool) => (
           <div key={tool.name} className='group hover:bg-accent/50 rounded-lg border p-6 transition-colors'>
             <div className='flex items-start gap-4'>

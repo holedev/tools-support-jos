@@ -1,4 +1,4 @@
-import { ChevronDownIcon, FileTextIcon, MailCheckIcon } from "lucide-react";
+import { ChevronDownIcon, FileTextIcon, MailCheckIcon, CalendarIcon } from "lucide-react";
 
 import {
   Sidebar,
@@ -27,6 +27,11 @@ const items = [
     title: "SMTP Check",
     url: "/tools/smtp-check",
     icon: MailCheckIcon
+  },
+  {
+    title: "Publication",
+    url: "/tools/publication",
+    icon: CalendarIcon
   }
 ];
 
