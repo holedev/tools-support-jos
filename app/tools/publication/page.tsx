@@ -1,4 +1,4 @@
-import { Card } from "@/components/ui/card";
+
 import { Journal } from "./types";
 import { DataTable } from "./components/data-table";
 
@@ -47,10 +47,10 @@ function calculateStats(journals: Journal[]) {
 }
 
 export default function PublicationFrequencyPage() {
-  const stats = calculateStats(data);
+  const _ = calculateStats(data);
 
   return (
-    <div className="container mx-auto py-10">
+    <div className="container mx-auto py-2">
       <div className="flex flex-col gap-8">
         <div className="flex flex-col gap-4">
           <h1 className="text-2xl font-bold">Publication Frequency</h1>

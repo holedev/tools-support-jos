@@ -12,11 +12,6 @@ interface StatsSheetProps {
   data: Journal[];
 }
 
-interface JournalStats {
-  name: string;
-  issuesPerYear: number;
-}
-
 export function StatsSheet({ data }: StatsSheetProps) {
   const stats = React.useMemo(() => {
     const totalIssues = data.reduce((sum, journal) => sum + journal.publicationDate.length, 0);

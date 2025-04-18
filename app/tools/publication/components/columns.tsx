@@ -3,6 +3,21 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Journal } from "../types";
 
+const isVietnamese = (text: string) => /[\u00C0-\u1EF9]/.test(text);
+
+const getIssueNumber = (journal: Journal, month: string, year: number = 2025) => {
+  const isVi = isVietnamese(journal.journal);
+  const baseVolume = isVi ? 20 : 15;
+  const volume = baseVolume + (year - 2025);
+  
+  // Find position of this month in the journal's publication dates
+  const position = journal.publicationDate
+    .sort((a, b) => parseInt(a) - parseInt(b))
+    .indexOf(month) + 1;
+
+  return position > 0 ? `${volume}(${position})${year}` : "";
+};
+
 export const columns: ColumnDef<Journal>[] = [
   {
     accessorKey: "journal",
@@ -13,7 +28,7 @@ export const columns: ColumnDef<Journal>[] = [
     header: "Jan",
     cell: ({ row }) => {
       const dates = row.original.publicationDate;
-      return dates.includes("01") ? "✓" : "-";
+      return dates.includes("01") ? getIssueNumber(row.original, "01") : "-";
     },
   },
   {
@@ -21,7 +36,7 @@ export const columns: ColumnDef<Journal>[] = [
     header: "Feb",
     cell: ({ row }) => {
       const dates = row.original.publicationDate;
-      return dates.includes("02") ? "✓" : "-";
+      return dates.includes("02") ? getIssueNumber(row.original, "02") : "-";
     },
   },
   {
@@ -29,7 +44,7 @@ export const columns: ColumnDef<Journal>[] = [
     header: "Mar",
     cell: ({ row }) => {
       const dates = row.original.publicationDate;
-      return dates.includes("03") ? "✓" : "-";
+      return dates.includes("03") ? getIssueNumber(row.original, "03") : "-";
     },
   },
   {
@@ -37,7 +52,7 @@ export const columns: ColumnDef<Journal>[] = [
     header: "Apr",
     cell: ({ row }) => {
       const dates = row.original.publicationDate;
-      return dates.includes("04") ? "✓" : "-";
+      return dates.includes("04") ? getIssueNumber(row.original, "04") : "-";
     },
   },
   {
@@ -45,7 +60,7 @@ export const columns: ColumnDef<Journal>[] = [
     header: "May",
     cell: ({ row }) => {
       const dates = row.original.publicationDate;
-      return dates.includes("05") ? "✓" : "-";
+      return dates.includes("05") ? getIssueNumber(row.original, "05") : "-";
     },
   },
   {
@@ -53,7 +68,7 @@ export const columns: ColumnDef<Journal>[] = [
     header: "Jun",
     cell: ({ row }) => {
       const dates = row.original.publicationDate;
-      return dates.includes("06") ? "✓" : "-";
+      return dates.includes("06") ? getIssueNumber(row.original, "06") : "-";
     },
   },
   {
@@ -61,7 +76,7 @@ export const columns: ColumnDef<Journal>[] = [
     header: "Jul",
     cell: ({ row }) => {
       const dates = row.original.publicationDate;
-      return dates.includes("07") ? "✓" : "-";
+      return dates.includes("07") ? getIssueNumber(row.original, "07") : "-";
     },
   },
   {
@@ -69,7 +84,7 @@ export const columns: ColumnDef<Journal>[] = [
     header: "Aug",
     cell: ({ row }) => {
       const dates = row.original.publicationDate;
-      return dates.includes("08") ? "✓" : "-";
+      return dates.includes("08") ? getIssueNumber(row.original, "08") : "-";
     },
   },
   {
@@ -77,7 +92,7 @@ export const columns: ColumnDef<Journal>[] = [
     header: "Sep",
     cell: ({ row }) => {
       const dates = row.original.publicationDate;
-      return dates.includes("09") ? "✓" : "-";
+      return dates.includes("09") ? getIssueNumber(row.original, "09") : "-";
     },
   },
   {
@@ -85,7 +100,7 @@ export const columns: ColumnDef<Journal>[] = [
     header: "Oct",
     cell: ({ row }) => {
       const dates = row.original.publicationDate;
-      return dates.includes("10") ? "✓" : "-";
+      return dates.includes("10") ? getIssueNumber(row.original, "10") : "-";
     },
   },
   {
@@ -93,7 +108,7 @@ export const columns: ColumnDef<Journal>[] = [
     header: "Nov",
     cell: ({ row }) => {
       const dates = row.original.publicationDate;
-      return dates.includes("11") ? "✓" : "-";
+      return dates.includes("11") ? getIssueNumber(row.original, "11") : "-";
     },
   },
   {
@@ -101,7 +116,7 @@ export const columns: ColumnDef<Journal>[] = [
     header: "Dec",
     cell: ({ row }) => {
       const dates = row.original.publicationDate;
-      return dates.includes("12") ? "✓" : "-";
+      return dates.includes("12") ? getIssueNumber(row.original, "12") : "-";
     },
   },
 ];

@@ -61,36 +61,35 @@ export function DataTable({ data }: DataTableProps) {
   const [monthRange, setMonthRange] = React.useState<MonthRangeFilter>({ from: "", to: "" });
   const [language, setLanguage] = React.useState("all");
 
-  const filteredData = React.useMemo(() => {
-    if (language === "all") return data;
-    
-    return data.filter(journal => {
-      const isVi = isVietnamese(journal.journal);
-      return language === "vi" ? isVi : !isVi;
-    });
-  }, [data, language]);
+  // Filter data and calculate totals
+  const [filteredData, totalIssues] = React.useMemo(() => {
+    // First filter by language
+    const langFiltered = language === "all" 
+      ? data 
+      : data.filter(journal => {
+          const isVi = isVietnamese(journal.journal);
+          return language === "vi" ? isVi : !isVi;
+        });
 
-  // Calculate total issues for filtered data in selected range
-  const filteredTotalIssues = React.useMemo(() => {
-    if (!monthRange.from || !monthRange.to) {
-      return filteredData.reduce((sum, journal) => sum + journal.publicationDate.length, 0);
-    }
+    // Then calculate total issues based on month range
+    const total = monthRange.from && monthRange.to
+      ? langFiltered.reduce((sum, journal) => {
+          const issuesInRange = journal.publicationDate.filter(month => {
+            const monthNum = parseInt(month);
+            const fromMonth = parseInt(monthRange.from);
+            const toMonth = parseInt(monthRange.to);
+            if (fromMonth <= toMonth) {
+              return monthNum >= fromMonth && monthNum <= toMonth;
+            } else {
+              return monthNum >= fromMonth || monthNum <= toMonth;
+            }
+          }).length;
+          return sum + issuesInRange;
+        }, 0)
+      : langFiltered.reduce((sum, journal) => sum + journal.publicationDate.length, 0);
 
-    const fromMonth = parseInt(monthRange.from);
-    const toMonth = parseInt(monthRange.to);
-    
-    return filteredData.reduce((total, journal) => {
-      const issuesInRange = journal.publicationDate.filter(month => {
-        const monthNum = parseInt(month);
-        if (fromMonth <= toMonth) {
-          return monthNum >= fromMonth && monthNum <= toMonth;
-        } else {
-          return monthNum >= fromMonth || monthNum <= toMonth;
-        }
-      }).length;
-      return total + issuesInRange;
-    }, 0);
-  }, [filteredData, monthRange]);
+    return [langFiltered, total];
+  }, [data, language, monthRange]);
 
   // Update column visibility based on month range
   React.useEffect(() => {
@@ -143,7 +142,7 @@ export function DataTable({ data }: DataTableProps) {
           <Input
             placeholder="Filter journals..."
             value={(table.getColumn("journal")?.getFilterValue() as string) ?? ""}
-            onChange={(event) =>
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
               table.getColumn("journal")?.setFilterValue(event.target.value)
             }
             className="max-w-sm"
@@ -165,14 +164,12 @@ export function DataTable({ data }: DataTableProps) {
               </SelectGroup>
             </SelectContent>
           </Select>
-          {filteredTotalIssues > 0 && (
-            <div className="text-sm">
-              <span className="font-medium">{filteredTotalIssues}</span>
-              <span className="text-muted-foreground ml-1">
-                issues {monthRange.from && monthRange.to ? 'in period' : 'total'}
-              </span>
-            </div>
-          )}
+          <div className="text-sm">
+            <span className="font-medium">{totalIssues}</span>
+            <span className="text-muted-foreground ml-1">
+              issues {monthRange.from && monthRange.to ? 'in period' : 'total'}
+            </span>
+          </div>
         </div>
         <div className="flex items-center gap-2">
           <Select
@@ -256,7 +253,7 @@ export function DataTable({ data }: DataTableProps) {
                       className={
                         cell.column.id === "journal" 
                           ? "" 
-                          : "text-center"
+                          : "text-center text-sm"
                       }
                     >
                       {cell.column.id === "journal" ? (
@@ -264,11 +261,7 @@ export function DataTable({ data }: DataTableProps) {
                           {flexRender(cell.column.columnDef.cell, cell.getContext())}
                         </div>
                       ) : (
-                        <div className={`${
-                          flexRender(cell.column.columnDef.cell, cell.getContext()) === "✓" 
-                            ? "text-green-600 font-bold" 
-                            : "text-muted-foreground"
-                        }`}>
+                        <div className={cell.getValue() !== "-" ? "font-medium text-primary" : "text-muted-foreground"}>
                           {flexRender(cell.column.columnDef.cell, cell.getContext())}
                         </div>
                       )}
