@@ -1,25 +1,24 @@
 "use client";
 
-import * as React from "react";
 import {
   type ColumnFiltersState,
   type SortingState,
+  type VisibilityState,
+  flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  useReactTable,
-  type VisibilityState,
-  flexRender
+  useReactTable
 } from "@tanstack/react-table";
+import * as React from "react";
 
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import type { Journal } from "../types";
 import { columns } from "./columns";
-import { StatsSheet } from "./stats-sheet";
 
 interface DataTableProps {
   data: Journal[];
@@ -206,7 +205,6 @@ export function DataTable({ data }: DataTableProps) {
               Reset
             </Button>
           )}
-          <StatsSheet data={data} />
         </div>
       </div>
 

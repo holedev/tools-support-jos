@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { SMTPForm } from "./components/smtp-form.client";
 import { Toaster } from "sonner";
+import { SMTPForm } from "./components/smtp-form.client";
 
 export const metadata: Metadata = {
   title: "SMTP Check Tool",

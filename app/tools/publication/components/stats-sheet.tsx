@@ -1,12 +1,12 @@
 "use client";
 
-import * as React from "react";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { BarChart3 } from "lucide-react";
-import type { Journal } from "../types";
 import { Card } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { BarChart3 } from "lucide-react";
+import * as React from "react";
+import type { Journal } from "../types";
 
 interface StatsSheetProps {
   data: Journal[];

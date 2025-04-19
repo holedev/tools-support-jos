@@ -1,4 +1,4 @@
-import type { Author, Affiliation, AuthorOutput, KeywordOutput } from "./types";
+import type { Affiliation, Author, AuthorOutput, KeywordOutput } from "./types";
 
 export function parseAuthors(text: string): AuthorOutput {
   const lines = text

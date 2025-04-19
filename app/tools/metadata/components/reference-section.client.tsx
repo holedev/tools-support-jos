@@ -1,15 +1,15 @@
 "use client";
 
-import { useEditor, EditorContent } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { EditorContent, useEditor } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import { useState } from "react";
 import type { TabType } from "../types";
-import { ReferenceToolbar } from "./reference-toolbar.client";
-import { ReferenceResult } from "./reference-result.client";
 import { cleanHtml } from "../utils";
 import { PasteButton } from "./paste-button.client";
+import { ReferenceResult } from "./reference-result.client";
+import { ReferenceToolbar } from "./reference-toolbar.client";
 
 interface ReferenceSectionProps {
   output: string;

@@ -1,5 +1,6 @@
-import type { Journal } from "./types";
 import { DataTable } from "./components/data-table";
+import { StatsSheet } from "./components/stats-sheet";
+import type { Journal } from "./types";
 
 const data: Journal[] = [
   {
@@ -51,9 +52,12 @@ export default function PublicationFrequencyPage() {
   return (
     <div className='mx-auto p-2'>
       <div className='flex flex-col gap-8'>
-        <div className='flex flex-col gap-4'>
-          <h1 className='text-2xl font-bold'>Publication Frequency</h1>
-          <p className='text-muted-foreground'>View publication frequency for different journals by month.</p>
+        <div className='flex items-center justify-between'>
+          <div className='flex flex-col gap-4'>
+            <h1 className='text-2xl font-bold'>Publication Frequency</h1>
+            <p className='text-muted-foreground'>View publication frequency for different journals by month.</p>
+          </div>
+          <StatsSheet data={data} />
         </div>
         <DataTable data={data} />
       </div>

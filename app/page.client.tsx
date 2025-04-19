@@ -1,6 +1,6 @@
 "use client";
 
-import { FileCode, Library, Code2 } from "lucide-react";
+import { Code2, FileCode, Library } from "lucide-react";
 import Link from "next/link";
 
 const tools = [

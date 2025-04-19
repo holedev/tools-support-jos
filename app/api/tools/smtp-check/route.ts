@@ -1,7 +1,7 @@
+import type { SMTPConfig } from "@/app/tools/smtp-check/types";
 import type { NextRequest } from "next/server";
 import nodemailer from "nodemailer";
 import { z } from "zod";
-import type { SMTPConfig } from "@/app/tools/smtp-check/types";
 
 /**
  * @swagger

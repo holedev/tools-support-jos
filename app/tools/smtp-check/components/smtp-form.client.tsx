@@ -1,16 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { AlertCircle, Eye, EyeOff, X } from "lucide-react";
+import { useState } from "react";
 import { toast } from "sonner";
-import { Eye, EyeOff, AlertCircle, X } from "lucide-react";
-import type { SMTPConfig, SMTPCheckResult } from "../types";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import type { SMTPCheckResult, SMTPConfig } from "../types";
 
 interface ConnectionFieldsProps {
   config: SMTPConfig;

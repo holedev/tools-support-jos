@@ -1,4 +1,4 @@
-import { ChevronDownIcon, FileTextIcon, MailCheckIcon, CalendarIcon } from "lucide-react";
+import { CalendarIcon, ChevronDownIcon, FileTextIcon, MailCheckIcon } from "lucide-react";
 
 import {
   Sidebar,
@@ -12,9 +12,9 @@ import {
   SidebarMenuButton,
   SidebarMenuItem
 } from "@/components/ui/sidebar";
+import Link from "next/link";
 import { ThemeToggle } from "./theme-toggle";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./ui/collapsible";
-import Link from "next/link";
 
 // Menu items.
 const items = [

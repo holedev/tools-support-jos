@@ -1,7 +1,7 @@
 import type React from "react";
 
-import { getApiDocs } from "@/lib/swagger";
 import SwaggerUI from "@/components/swagger-ui";
+import { getApiDocs } from "@/lib/swagger";
 
 export default async function ApiDoc(): Promise<React.ReactElement> {
   const spec = getApiDocs();

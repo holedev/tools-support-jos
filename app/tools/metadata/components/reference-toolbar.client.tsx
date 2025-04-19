@@ -1,8 +1,8 @@
 "use client";
 
-import type { Editor } from "@tiptap/react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import type { Editor } from "@tiptap/react";
 
 interface ReferenceToolbarProps {
   editor: Editor | null;

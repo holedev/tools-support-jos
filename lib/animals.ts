@@ -107,7 +107,6 @@ export function getRandomAnimal(): string {
 }
 
 export function getRandomAnimals(count = 1): string[] {
-  
   const validCount = Math.min(Math.max(count, 1), animals.length);
 
   const shuffled = [...animals].sort(() => 0.5 - Math.random());

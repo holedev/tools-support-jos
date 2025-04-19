@@ -1,6 +1,6 @@
+import { Skeleton } from "@/components/ui/skeleton";
 import { Suspense } from "react";
 import { ToolsPage } from "./page.client";
-import { Skeleton } from "@/components/ui/skeleton";
 
 export default function Page() {
   return (
