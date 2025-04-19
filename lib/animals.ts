@@ -106,10 +106,10 @@ export function getRandomAnimal(): string {
   return animals[randomIndex];
 }
 
-export function getRandomAnimals(count: number = 1): string[] {
-  if (count < 1) count = 1;
-  if (count > animals.length) count = animals.length;
+export function getRandomAnimals(count = 1): string[] {
+  
+  const validCount = Math.min(Math.max(count, 1), animals.length);
 
   const shuffled = [...animals].sort(() => 0.5 - Math.random());
-  return shuffled.slice(0, count);
+  return shuffled.slice(0, validCount);
 }

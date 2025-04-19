@@ -1,7 +1,7 @@
-import { type NextRequest } from 'next/server'
-import nodemailer from 'nodemailer'
-import { z } from 'zod'
-import { type SMTPConfig } from '@/app/tools/smtp-check/types'
+import type { NextRequest } from "next/server";
+import nodemailer from "nodemailer";
+import { z } from "zod";
+import type { SMTPConfig } from "@/app/tools/smtp-check/types";
 
 /**
  * @swagger
@@ -81,8 +81,8 @@ const checkSchema = z.object({
   secure: z.boolean().default(true),
   username: z.string().min(1, "Username is required"),
   password: z.string().min(1, "Password is required"),
-  mode: z.literal('check')
-})
+  mode: z.literal("check")
+});
 
 const sendSchema = z.object({
   host: z.string().min(1, "Host is required"),
@@ -90,80 +90,89 @@ const sendSchema = z.object({
   secure: z.boolean().default(true),
   username: z.string().min(1, "Username is required"),
   password: z.string().min(1, "Password is required"),
-  mode: z.literal('send'),
+  mode: z.literal("send"),
   from: z.string().email("Valid sender email is required"),
-  to: z.string().email("Valid recipient email is required"),
-})
+  to: z.string().email("Valid recipient email is required")
+});
 
-const configSchema = z.discriminatedUnion('mode', [checkSchema, sendSchema])
+const configSchema = z.discriminatedUnion("mode", [checkSchema, sendSchema]);
 
 export async function POST(request: NextRequest) {
   try {
-    const config: SMTPConfig = await request.json()
-    
+    const config: SMTPConfig = await request.json();
+
     // Validate request body
     const validatedConfig = await configSchema.parseAsync(config).catch((err) => {
-      throw new Error(err.errors[0]?.message || 'Invalid request data')
-    })
-    
-    const startTime = Date.now()
-    
+      throw new Error(err.errors[0]?.message || "Invalid request data");
+    });
+
+    const startTime = Date.now();
+
     // Create test connection
     const transport = nodemailer.createTransport({
       host: validatedConfig.host,
       port: validatedConfig.port,
       secure: validatedConfig.secure,
-      auth: validatedConfig.username ? {
-        user: validatedConfig.username,
-        pass: validatedConfig.password,
-      } : undefined,
-    })
+      auth: validatedConfig.username
+        ? {
+            user: validatedConfig.username,
+            pass: validatedConfig.password
+          }
+        : undefined
+    });
 
     try {
       // Verify connection configuration
-      await transport.verify()
-      
-      const connectionTime = Date.now() - startTime
+      await transport.verify();
+
+      const connectionTime = Date.now() - startTime;
 
       // Send test email only in send mode and if addresses are provided
-      if (validatedConfig.mode === 'send' && validatedConfig.from && validatedConfig.to) {
+      if (validatedConfig.mode === "send" && validatedConfig.from && validatedConfig.to) {
         await transport.sendMail({
           from: validatedConfig.from,
           to: validatedConfig.to,
-          subject: 'SMTP Test Email',
-          text: 'This is a test email to verify SMTP configuration.',
-          html: '<h1>SMTP Test Email</h1><p>This is a test email to verify SMTP configuration.</p>',
-        })
+          subject: "SMTP Test Email",
+          text: "This is a test email to verify SMTP configuration.",
+          html: "<h1>SMTP Test Email</h1><p>This is a test email to verify SMTP configuration.</p>"
+        });
       }
-      
+
       return Response.json({
         success: true,
-        message: validatedConfig.mode === 'send'
-          ? 'Successfully connected to SMTP server and sent test email'
-          : 'Successfully connected to SMTP server',
+        message:
+          validatedConfig.mode === "send"
+            ? "Successfully connected to SMTP server and sent test email"
+            : "Successfully connected to SMTP server",
         details: {
           connectionTime,
           secure: validatedConfig.secure,
           // We could get auth methods here if needed
-          authMethods: ['PLAIN', 'LOGIN'], // Example auth methods
-        },
-      })
+          authMethods: ["PLAIN", "LOGIN"] // Example auth methods
+        }
+      });
     } catch (error) {
-      return Response.json({
-        success: false,
-        message: error instanceof Error ? error.message : 'Failed to connect to SMTP server',
-        details: {
-          error: error instanceof Error ? error.message : 'Unknown error',
+      return Response.json(
+        {
+          success: false,
+          message: error instanceof Error ? error.message : "Failed to connect to SMTP server",
+          details: {
+            error: error instanceof Error ? error.message : "Unknown error"
+          }
         },
-      }, { status: 400 })
+        { status: 400 }
+      );
     }
   } catch (error) {
-    return Response.json({
-      success: false,
-      message: error instanceof Error ? error.message : 'Invalid request data',
-      details: {
-        error: error instanceof Error ? error.message : 'Unknown error',
+    return Response.json(
+      {
+        success: false,
+        message: error instanceof Error ? error.message : "Invalid request data",
+        details: {
+          error: error instanceof Error ? error.message : "Unknown error"
+        }
       },
-    }, { status: 400 })
+      { status: 400 }
+    );
   }
 }

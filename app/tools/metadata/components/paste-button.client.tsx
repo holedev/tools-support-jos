@@ -39,7 +39,9 @@ export function PasteButton({
           tempDiv.innerHTML = htmlContent;
 
           // Clean up Word content
-          tempDiv.querySelectorAll("meta, link, style, script, o\\:p").forEach((el) => el.remove());
+          for (const el of tempDiv.querySelectorAll("meta, link, style, script, o\\:p")) {
+            el.remove();
+          }
 
           const cleanedHtml = tempDiv.innerHTML
             .replace(/<\/?xml[^>]*>/g, "")

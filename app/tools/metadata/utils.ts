@@ -1,4 +1,4 @@
-import { Author, Affiliation, AuthorOutput, KeywordOutput } from "./types";
+import type { Author, Affiliation, AuthorOutput, KeywordOutput } from "./types";
 
 export function parseAuthors(text: string): AuthorOutput {
   const lines = text
@@ -26,7 +26,7 @@ export function parseAuthors(text: string): AuthorOutput {
 
   for (const match of authorMatches) {
     const name = match[1].trim();
-    const affNumbers = match[2].split(",").map((n) => parseInt(n.trim()));
+    const affNumbers = match[2].split(",").map((n) => Number.parseInt(n.trim()));
     const isCorresponding = !!match[3];
 
     authors.push({
@@ -41,17 +41,17 @@ export function parseAuthors(text: string): AuthorOutput {
     const match = lines[currentLine].match(/^(\d+)(.+)$/);
     if (match) {
       affiliations.push({
-        id: parseInt(match[1]),
+        id: Number.parseInt(match[1]),
         text: match[2].trim()
       });
-      affiliationsMap.set(parseInt(match[1]), match[2].trim());
+      affiliationsMap.set(Number.parseInt(match[1]), match[2].trim());
     }
     currentLine++;
   }
 
   // Parse corresponding author email
   const emailLine = lines[lines.length - 1];
-  if (emailLine && emailLine.toLowerCase().includes("corresponding author")) {
+  if (emailLine?.toLowerCase().includes("corresponding author")) {
     const emailMatch = emailLine.match(/:\s*(.+@.+)$/);
     if (emailMatch) {
       const email = emailMatch[1].trim();

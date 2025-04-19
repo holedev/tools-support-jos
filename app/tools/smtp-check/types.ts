@@ -6,7 +6,7 @@ export interface SMTPConfig {
   secure?: boolean;
   from?: string;
   to?: string;
-  mode?: 'check' | 'send';
+  mode?: "check" | "send";
 }
 
 export interface SMTPCheckResult {

@@ -2,22 +2,22 @@
 
 import * as React from "react";
 import {
-  ColumnFiltersState,
-  SortingState,
+  type ColumnFiltersState,
+  type SortingState,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-  VisibilityState,
-  flexRender,
+  type VisibilityState,
+  flexRender
 } from "@tanstack/react-table";
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Journal } from "../types";
+import type { Journal } from "../types";
 import { columns } from "./columns";
 import { StatsSheet } from "./stats-sheet";
 
@@ -37,13 +37,13 @@ const months = [
   { value: "09", label: "September" },
   { value: "10", label: "October" },
   { value: "11", label: "November" },
-  { value: "12", label: "December" },
+  { value: "12", label: "December" }
 ];
 
 const languages = [
   { value: "all", label: "All Languages" },
   { value: "vi", label: "Vietnamese" },
-  { value: "en", label: "English" },
+  { value: "en", label: "English" }
 ];
 
 interface MonthRangeFilter {
@@ -64,29 +64,29 @@ export function DataTable({ data }: DataTableProps) {
   // Filter data and calculate totals
   const [filteredData, totalIssues] = React.useMemo(() => {
     // First filter by language
-    const langFiltered = language === "all" 
-      ? data 
-      : data.filter(journal => {
-          const isVi = isVietnamese(journal.journal);
-          return language === "vi" ? isVi : !isVi;
-        });
+    const langFiltered =
+      language === "all"
+        ? data
+        : data.filter((journal) => {
+            const isVi = isVietnamese(journal.journal);
+            return language === "vi" ? isVi : !isVi;
+          });
 
     // Then calculate total issues based on month range
-    const total = monthRange.from && monthRange.to
-      ? langFiltered.reduce((sum, journal) => {
-          const issuesInRange = journal.publicationDate.filter(month => {
-            const monthNum = parseInt(month);
-            const fromMonth = parseInt(monthRange.from);
-            const toMonth = parseInt(monthRange.to);
-            if (fromMonth <= toMonth) {
-              return monthNum >= fromMonth && monthNum <= toMonth;
-            } else {
-              return monthNum >= fromMonth || monthNum <= toMonth;
-            }
-          }).length;
-          return sum + issuesInRange;
-        }, 0)
-      : langFiltered.reduce((sum, journal) => sum + journal.publicationDate.length, 0);
+    const total =
+      monthRange.from && monthRange.to
+        ? langFiltered.reduce((sum, journal) => {
+            const issuesInRange = journal.publicationDate.filter((month) => {
+              const monthNum = Number.parseInt(month);
+              const fromMonth = Number.parseInt(monthRange.from);
+              const toMonth = Number.parseInt(monthRange.to);
+              return fromMonth <= toMonth
+                ? monthNum >= fromMonth && monthNum <= toMonth
+                : monthNum >= fromMonth || monthNum <= toMonth;
+            }).length;
+            return sum + issuesInRange;
+          }, 0)
+        : langFiltered.reduce((sum, journal) => sum + journal.publicationDate.length, 0);
 
     return [langFiltered, total];
   }, [data, language, monthRange]);
@@ -98,14 +98,14 @@ export function DataTable({ data }: DataTableProps) {
       return;
     }
 
-    const fromMonth = parseInt(monthRange.from);
-    const toMonth = parseInt(monthRange.to);
-    
+    const fromMonth = Number.parseInt(monthRange.from);
+    const toMonth = Number.parseInt(monthRange.to);
+
     const newVisibility: VisibilityState = {};
-    newVisibility["journal"] = true;
+    newVisibility.journal = true;
 
     for (let i = 1; i <= 12; i++) {
-      const monthStr = i.toString().padStart(2, '0');
+      const monthStr = i.toString().padStart(2, "0");
       if (fromMonth <= toMonth) {
         newVisibility[monthStr] = i >= fromMonth && i <= toMonth;
       } else {
@@ -131,28 +131,25 @@ export function DataTable({ data }: DataTableProps) {
       sorting,
       columnFilters,
       columnVisibility,
-      rowSelection,
-    },
+      rowSelection
+    }
   });
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center gap-4 py-4">
-        <div className="flex-1 flex items-center gap-4">
+    <div className='space-y-4'>
+      <div className='flex items-center gap-4 py-4'>
+        <div className='flex-1 flex items-center gap-4'>
           <Input
-            placeholder="Filter journals..."
+            placeholder='Filter journals...'
             value={(table.getColumn("journal")?.getFilterValue() as string) ?? ""}
             onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
               table.getColumn("journal")?.setFilterValue(event.target.value)
             }
-            className="max-w-sm"
+            className='max-w-sm'
           />
-          <Select
-            value={language}
-            onValueChange={setLanguage}
-          >
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Select language" />
+          <Select value={language} onValueChange={setLanguage}>
+            <SelectTrigger className='w-[180px]'>
+              <SelectValue placeholder='Select language' />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
@@ -164,20 +161,20 @@ export function DataTable({ data }: DataTableProps) {
               </SelectGroup>
             </SelectContent>
           </Select>
-          <div className="text-sm">
-            <span className="font-medium">{totalIssues}</span>
-            <span className="text-muted-foreground ml-1">
-              issues {monthRange.from && monthRange.to ? 'in period' : 'total'}
+          <div className='text-sm'>
+            <span className='font-medium'>{totalIssues}</span>
+            <span className='text-muted-foreground ml-1'>
+              issues {monthRange.from && monthRange.to ? "in period" : "total"}
             </span>
           </div>
         </div>
-        <div className="flex items-center gap-2">
+        <div className='flex items-center gap-2'>
           <Select
             value={monthRange.from}
             onValueChange={(value: string) => setMonthRange({ ...monthRange, from: value })}
           >
-            <SelectTrigger className="w-[140px]">
-              <SelectValue placeholder="From month" />
+            <SelectTrigger className='w-[140px]'>
+              <SelectValue placeholder='From month' />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
@@ -190,12 +187,9 @@ export function DataTable({ data }: DataTableProps) {
             </SelectContent>
           </Select>
           <span>to</span>
-          <Select
-            value={monthRange.to}
-            onValueChange={(value: string) => setMonthRange({ ...monthRange, to: value })}
-          >
-            <SelectTrigger className="w-[140px]">
-              <SelectValue placeholder="To month" />
+          <Select value={monthRange.to} onValueChange={(value: string) => setMonthRange({ ...monthRange, to: value })}>
+            <SelectTrigger className='w-[140px]'>
+              <SelectValue placeholder='To month' />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
@@ -208,11 +202,7 @@ export function DataTable({ data }: DataTableProps) {
             </SelectContent>
           </Select>
           {(monthRange.from || monthRange.to) && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setMonthRange({ from: "", to: "" })}
-            >
+            <Button variant='ghost' size='sm' onClick={() => setMonthRange({ from: "", to: "" })}>
               Reset
             </Button>
           )}
@@ -220,7 +210,7 @@ export function DataTable({ data }: DataTableProps) {
         </div>
       </div>
 
-      <div className="rounded-md border">
+      <div className='rounded-md border'>
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -228,12 +218,7 @@ export function DataTable({ data }: DataTableProps) {
                 {headerGroup.headers.map((header) => {
                   return (
                     <TableHead key={header.id} className={header.column.id === "journal" ? "" : "text-center"}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                      {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                     </TableHead>
                   );
                 })}
@@ -243,23 +228,11 @@ export function DataTable({ data }: DataTableProps) {
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
+                <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell 
-                      key={cell.id} 
-                      className={
-                        cell.column.id === "journal" 
-                          ? "" 
-                          : "text-center text-sm"
-                      }
-                    >
+                    <TableCell key={cell.id} className={cell.column.id === "journal" ? "" : "text-center text-sm"}>
                       {cell.column.id === "journal" ? (
-                        <div className="font-medium">
-                          {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                        </div>
+                        <div className='font-medium'>{flexRender(cell.column.columnDef.cell, cell.getContext())}</div>
                       ) : (
                         <div className={cell.getValue() !== "-" ? "font-medium text-primary" : "text-muted-foreground"}>
                           {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -271,10 +244,7 @@ export function DataTable({ data }: DataTableProps) {
               ))
             ) : (
               <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
+                <TableCell colSpan={columns.length} className='h-24 text-center'>
                   No results.
                 </TableCell>
               </TableRow>
@@ -282,29 +252,23 @@ export function DataTable({ data }: DataTableProps) {
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-between py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
+      <div className='flex items-center justify-between py-4'>
+        <div className='flex-1 text-sm text-muted-foreground'>
           Showing {table.getFilteredRowModel().rows.length} of {filteredData.length} journals
         </div>
-        <div className="flex items-center space-x-2">
+        <div className='flex items-center space-x-2'>
           <Button
-            variant="outline"
-            size="sm"
+            variant='outline'
+            size='sm'
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
           >
             Previous
           </Button>
-          <div className="text-sm text-muted-foreground">
-            Page {table.getState().pagination.pageIndex + 1} of{" "}
-            {table.getPageCount()}
+          <div className='text-sm text-muted-foreground'>
+            Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
           </div>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
+          <Button variant='outline' size='sm' onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
             Next
           </Button>
         </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { AuthorOutput } from "../types";
+import type { AuthorOutput } from "../types";
 import { CopyButton } from "./copy-button.client";
 
 interface AuthorResultProps {
@@ -21,7 +21,7 @@ export function AuthorResult({ authorOutput, activeTab }: AuthorResultProps) {
         const _emailId = `email-${i}`;
 
         return (
-          <div key={i} className='space-y-2 border-b pb-4 pl-4 last:border-0'>
+          <div key={_authorId} className='space-y-2 border-b pb-4 pl-4 last:border-0'>
             <div className='mb-2 font-medium'>Author {i + 1}</div>
 
             <div className='grid gap-2 text-sm'>

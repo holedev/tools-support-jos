@@ -5,7 +5,7 @@ import StarterKit from "@tiptap/starter-kit";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { TabType } from "../types";
+import type { TabType } from "../types";
 import { ReferenceToolbar } from "./reference-toolbar.client";
 import { ReferenceResult } from "./reference-result.client";
 import { cleanHtml } from "../utils";
@@ -24,14 +24,16 @@ export function ReferenceSection({ output, setOutput }: ReferenceSectionProps) {
     editorProps: {
       handlePaste: (view, event) => {
         const htmlContent = event.clipboardData?.getData("text/html");
-        if (htmlContent && htmlContent.includes('class="Mso')) {
+        if (htmlContent?.includes('class="Mso')) {
           event.preventDefault();
 
           // Clean up Word content
           const tempDiv = document.createElement("div");
           tempDiv.innerHTML = htmlContent;
 
-          tempDiv.querySelectorAll("meta, link, style, script, o\\:p").forEach((el) => el.remove());
+          for (const el of tempDiv.querySelectorAll("meta, link, style, script, o\\:p")) {
+            el.remove();
+          }
 
           const cleanedHtml = tempDiv.innerHTML
             .replace(/<\/?xml[^>]*>/g, "")

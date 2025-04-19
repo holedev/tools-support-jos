@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import type React from "react";
+import { useState } from "react";
 
-import { AuthorOutput, TabType } from "../types";
+import type { AuthorOutput, TabType } from "../types";
 import { AuthorInput } from "./author-input.client";
 import { AuthorResult } from "./author-result.client";
 

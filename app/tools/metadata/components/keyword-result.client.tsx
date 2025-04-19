@@ -1,6 +1,6 @@
 "use client";
 
-import { KeywordOutput } from "../types";
+import type { KeywordOutput } from "../types";
 import { CopyButton } from "./copy-button.client";
 
 interface KeywordResultProps {
@@ -26,7 +26,7 @@ export function KeywordResult({ keywordOutput, activeTab }: KeywordResultProps) 
       <div className='space-y-2 pl-4'>
         <div className='grid gap-2'>
           {keywordOutput.keywords.map((keyword, i) => (
-            <div key={i} className='flex items-center gap-2'>
+            <div key={keyword} className='flex items-center gap-2'>
               <div>
                 <span className='text-muted-foreground'>Keyword {i + 1}:</span> {keyword}
               </div>

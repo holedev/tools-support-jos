@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { TabType } from "../types";
+import type { TabType } from "../types";
 import { PasteButton } from "./paste-button.client";
 
 interface AuthorInputProps {

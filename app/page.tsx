@@ -15,6 +15,7 @@ export default function Page() {
             {Array(3)
               .fill(0)
               .map((_, i) => (
+                // biome-ignore lint/suspicious/noArrayIndexKey: not nescessary
                 <div key={i} className='rounded-lg border p-6'>
                   <Skeleton className='h-12 w-12 rounded-full' />
                   <div className='mt-4 space-y-2'>

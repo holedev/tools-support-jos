@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import type React from "react";
+import { useState } from "react";
 
-import { KeywordOutput, TabType } from "../types";
+import type { KeywordOutput, TabType } from "../types";
 import { KeywordInput } from "./keyword-input.client";
 import { KeywordResult } from "./keyword-result.client";
 

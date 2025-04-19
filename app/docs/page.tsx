@@ -1,4 +1,4 @@
-import React from "react";
+import type React from "react";
 
 import { getApiDocs } from "@/lib/swagger";
 import SwaggerUI from "@/components/swagger-ui";

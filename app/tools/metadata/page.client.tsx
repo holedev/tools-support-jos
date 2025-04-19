@@ -4,7 +4,7 @@ import { useState } from "react";
 import { AuthorSection } from "./components/author-section.client";
 import { KeywordSection } from "./components/keyword-section.client";
 import { ReferenceSection } from "./components/reference-section.client";
-import { AuthorOutput, KeywordOutput } from "./types";
+import type { AuthorOutput, KeywordOutput } from "./types";
 import { parseAuthors, parseKeywords } from "./utils";
 
 export default function MetadataPage() {

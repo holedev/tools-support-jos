@@ -14,7 +14,7 @@ const tools = [
   },
   {
     name: "SMTP Check",
-    description: 
+    description:
       "Test and verify SMTP server configurations. Supports Gmail SMTP with both regular and app password authentication.",
     icon: <MailCheck className='h-6 w-6' />,
     href: "/tools/smtp-check"
