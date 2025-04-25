@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Calendar, FileCode, MailCheck } from "lucide-react";
+import { Calendar, CalendarDays, FileCode, MailCheck } from "lucide-react";
 import Link from "next/link";
 
 const tools = [
@@ -25,6 +25,13 @@ const tools = [
       "View and analyze publication frequency patterns across different journals. Track monthly publication schedules and trends.",
     icon: <Calendar className='h-6 w-6' />,
     href: "/tools/publication"
+  },
+  {
+    name: "Calendar Export",
+    description:
+      "Export and preview calendar data in various formats. Convert and format calendar entries for easy integration with different calendar systems.",
+    icon: <CalendarDays className='h-6 w-6' />,
+    href: "/tools/calendar-export"
   }
 ];
 

@@ -1,4 +1,4 @@
-import { CalendarIcon, ChevronDownIcon, FileTextIcon, MailCheckIcon } from "lucide-react";
+import { CalendarDaysIcon, CalendarIcon, ChevronDownIcon, FileTextIcon, MailCheckIcon } from "lucide-react";
 
 import {
   Sidebar,
@@ -32,6 +32,11 @@ const items = [
     title: "Publication",
     url: "/tools/publication",
     icon: CalendarIcon
+  },
+  {
+    title: "Calendar Export",
+    url: "/tools/calendar-export",
+    icon: CalendarDaysIcon
   }
 ];
 
