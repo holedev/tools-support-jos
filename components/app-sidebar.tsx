@@ -1,4 +1,4 @@
-import { CalendarDaysIcon, CalendarIcon, ChevronDownIcon, FileTextIcon, MailCheckIcon } from "lucide-react";
+import { CalendarDaysIcon, CalendarIcon, ChevronDownIcon, FileTextIcon, MailCheckIcon, FileUpIcon } from "lucide-react";
 
 import {
   Sidebar,
@@ -37,6 +37,11 @@ const items = [
     title: "Calendar Export",
     url: "/tools/calendar-export",
     icon: CalendarDaysIcon
+  },
+  {
+    title: "OJS Convert",
+    url: "/tools/ojs-convert",
+    icon: FileUpIcon
   }
 ];
 
@@ -61,7 +66,7 @@ export function AppSidebar() {
               <SidebarGroupContent>
                 <SidebarMenu>
                   {items.map((item) => (
-                    <SidebarMenuItem key={item.title} className=''>
+                    <SidebarMenuItem key={item.title}>
                       <SidebarMenuButton asChild>
                         <Link href={item.url}>
                           <item.icon />

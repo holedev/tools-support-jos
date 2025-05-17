@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Calendar, CalendarDays, FileCode, MailCheck } from "lucide-react";
+import { Calendar, CalendarDays, FileCode, MailCheck, FileUp } from "lucide-react";
 import Link from "next/link";
 
 const tools = [
@@ -32,6 +32,13 @@ const tools = [
       "Export and preview calendar data in various formats. Convert and format calendar entries for easy integration with different calendar systems.",
     icon: <CalendarDays className='h-6 w-6' />,
     href: "/tools/calendar-export"
+  },
+  {
+    name: "OJS Convert",
+    description:
+      "Convert OJS 2.4.8 XML files to OJS 3.1.2 format. Configurable options for English-only or bilingual content with customizable section settings.",
+    icon: <FileUp className='h-6 w-6' />,
+    href: "/tools/ojs-convert"
   }
 ];
 
@@ -43,7 +50,7 @@ export function ToolsPage() {
         <p className='text-muted-foreground text-lg'>Explore our collection of development tools and utilities</p>
       </div>
 
-      <div className='flex gap-8'>
+      <div className='grid gap-8 md:grid-cols-2'>
         {tools.map((tool) => (
           <div key={tool.name} className='group hover:bg-accent/50 rounded-lg border p-6 transition-colors'>
             <div className='flex items-start gap-4'>

@@ -2,13 +2,16 @@
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
-import { Copy, Download, FileUp, Maximize2 } from "lucide-react";
+import { Copy, Download, FileUp, Maximize2, Settings } from "lucide-react";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
-import { convertOJSXml, restoreXml } from "../xml-converter";
+import { DEFAULT_CONFIG } from "../config";
+import { type OJSConverterConfig, convertOJSXml } from "../xml-converter";
 import { LoadingSpinner } from "./loading-spinner";
 
 function truncateBase64(xml: string): string {
@@ -30,7 +33,13 @@ export function ConverterForm() {
   const [isConverting, setIsConverting] = useState(false);
   const [fileName, setFileName] = useState("");
   const [fullXml, setFullXml] = useState("");
+  const [showSettings, setShowSettings] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const [config, setConfig] = useState<OJSConverterConfig>({
+    ...DEFAULT_CONFIG,
+    isOnlyEnglishVersion: true // Set default to true since it's used more often
+  });
 
   const processFile = async (file: File) => {
     if (!file.name.endsWith(".xml")) {
@@ -45,7 +54,7 @@ export function ConverterForm() {
 
     try {
       const text = await file.text();
-      const result = convertOJSXml(text);
+      const result = convertOJSXml(text, config);
 
       const formattedXml = result;
       setFullXml(formattedXml);
@@ -115,10 +124,70 @@ export function ConverterForm() {
     }
   };
 
+  const updateConfig = (key: keyof OJSConverterConfig, value: string | boolean) => {
+    setConfig((prev) => ({
+      ...prev,
+      [key]: value
+    }));
+  };
+
   return (
     <div className='grid gap-4'>
       <Card className='p-4'>
         <div className='space-y-4'>
+          <div className='flex justify-between items-center'>
+            <h2 className='text-lg font-medium'>XML Converter</h2>
+            <Button variant='outline' size='sm' onClick={() => setShowSettings(!showSettings)}>
+              <Settings className='h-4 w-4 mr-2' />
+              Advanced Settings
+            </Button>
+          </div>
+
+          <div className='flex items-center justify-between p-2 border rounded-lg'>
+            <Label htmlFor='isOnlyEnglishVersion' className='font-medium'>
+              English Version Only
+            </Label>
+            <Switch
+              id='isOnlyEnglishVersion'
+              checked={config.isOnlyEnglishVersion}
+              onCheckedChange={(checked) => updateConfig("isOnlyEnglishVersion", checked)}
+            />
+          </div>
+
+          {showSettings && (
+            <div className='grid gap-4 p-4 border rounded-lg mb-4'>
+              <div className='grid gap-2'>
+                <Label htmlFor='sectionTitle'>Section Title</Label>
+                <Input
+                  id='sectionTitle'
+                  value={config.sectionTitle}
+                  onChange={(e) => updateConfig("sectionTitle", e.target.value)}
+                  placeholder='Section Title'
+                />
+              </div>
+
+              <div className='grid gap-2'>
+                <Label htmlFor='sectionAbbr'>Section Abbreviation</Label>
+                <Input
+                  id='sectionAbbr'
+                  value={config.sectionAbbr}
+                  onChange={(e) => updateConfig("sectionAbbr", e.target.value)}
+                  placeholder='Section Abbreviation'
+                />
+              </div>
+
+              <div className='grid gap-2'>
+                <Label htmlFor='authorUserGroup'>Author User Group</Label>
+                <Input
+                  id='authorUserGroup'
+                  value={config.authorUserGroup}
+                  onChange={(e) => updateConfig("authorUserGroup", e.target.value)}
+                  placeholder='Author User Group'
+                />
+              </div>
+            </div>
+          )}
+
           <button
             type='button'
             className={`w-full border-2 border-dashed rounded-lg p-8 text-center transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 ${
