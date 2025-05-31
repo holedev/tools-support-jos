@@ -1,4 +1,4 @@
-import { CalendarDaysIcon, CalendarIcon, ChevronDownIcon, FileTextIcon, MailCheckIcon, FileUpIcon } from "lucide-react";
+import { CalendarDaysIcon, CalendarIcon, ChevronDownIcon, FileTextIcon, MailCheckIcon, FileUpIcon, FileBarChartIcon } from "lucide-react";
 
 import {
   Sidebar,
@@ -42,6 +42,11 @@ const items = [
     title: "OJS Convert",
     url: "/tools/ojs-convert",
     icon: FileUpIcon
+  },
+  {
+    title: "Redif Analysis",
+    url: "/tools/redif-analysis",
+    icon: FileBarChartIcon
   }
 ];
 
