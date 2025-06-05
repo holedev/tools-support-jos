@@ -1,4 +1,12 @@
-import { CalendarDaysIcon, CalendarIcon, ChevronDownIcon, FileTextIcon, MailCheckIcon, FileUpIcon, FileBarChartIcon } from "lucide-react";
+import {
+  CalendarDaysIcon,
+  CalendarIcon,
+  ChevronDownIcon,
+  FileBarChartIcon,
+  FileTextIcon,
+  FileUpIcon,
+  MailCheckIcon
+} from "lucide-react";
 
 import {
   Sidebar,

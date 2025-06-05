@@ -4,8 +4,8 @@ export interface ArticleMetadata {
   issue: string; // format: volume(issue)year
   year: string;
   firstAuthor: string;
-  firstAuthorCategory: 'OU' | 'NonOU' | 'Foreign';
-  authorsOU: number; 
+  firstAuthorCategory: "OU" | "NonOU" | "Foreign";
+  authorsOU: number;
   authorsNonOU: number;
   authorsForeign: number;
 }
@@ -13,7 +13,7 @@ export interface ArticleMetadata {
 export interface AuthorInfo {
   name: string;
   workplace: string;
-  category: 'OU' | 'NonOU' | 'Foreign';
+  category: "OU" | "NonOU" | "Foreign";
   email?: string;
 }
 
@@ -25,7 +25,7 @@ export interface RedifArticle {
   year: string;
   authors: AuthorInfo[];
   firstAuthor: string;
-  firstAuthorCategory: 'OU' | 'NonOU' | 'Foreign';
+  firstAuthorCategory: "OU" | "NonOU" | "Foreign";
 }
 
 export interface FileParseResult {

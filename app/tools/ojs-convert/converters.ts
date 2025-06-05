@@ -174,6 +174,7 @@ export function convertIssue(issue: OldIssue, config: OJSConverterConfig) {
     issuePublished,
     issueCurrent,
     issueAccessStatus,
+    issueDatePublished,
     issueDateModified,
     langEn,
     langVi
@@ -205,7 +206,7 @@ export function convertIssue(issue: OldIssue, config: OJSConverterConfig) {
         }
       ]
     },
-    date_published: issue.date_published,
+    date_published: issueDatePublished || issue.date_published,
     last_modified: issueDateModified || issue.date_published,
     sections: {
       section: convertSection(issue.section, config)

@@ -1,6 +1,3 @@
-export interface Journal {
-  journal: string;
-  publicationDate: string[];
-}
+import type { Journal } from "@/constants";
 
 export type JournalData = Journal[];

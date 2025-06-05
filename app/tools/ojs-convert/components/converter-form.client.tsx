@@ -154,6 +154,21 @@ export function ConverterForm() {
             />
           </div>
 
+          {config.isOnlyEnglishVersion && (
+            <div className='flex items-center gap-4 p-2 border rounded-lg'>
+              <Label htmlFor='issueDatePublished' className='font-medium whitespace-nowrap'>
+                Date Published
+              </Label>
+              <Input
+                type='date'
+                id='issueDatePublished'
+                value={config.issueDatePublished}
+                onChange={(e) => updateConfig("issueDatePublished", e.target.value)}
+                className='max-w-[200px]'
+              />
+            </div>
+          )}
+
           {showSettings && (
             <div className='grid gap-4 p-4 border rounded-lg mb-4'>
               <div className='grid gap-2'>

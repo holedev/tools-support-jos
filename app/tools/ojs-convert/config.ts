@@ -8,6 +8,7 @@ export interface OJSConverterConfig {
   issuePublished?: string;
   issueCurrent?: string;
   issueAccessStatus?: string;
+  issueDatePublished?: string;
   issueDateModified?: string;
   sectionAbbr?: string;
   sectionTitle?: string;
@@ -24,6 +25,7 @@ export const DEFAULT_CONFIG: OJSConverterConfig = {
   issuePublished: "1",
   issueCurrent: "1",
   issueAccessStatus: "1",
+  issueDatePublished: new Date().toISOString().split("T")[0],
   issueDateModified: new Date().toISOString().split("T")[0],
   sectionAbbr: "BV",
   sectionTitle: "Bài viết",

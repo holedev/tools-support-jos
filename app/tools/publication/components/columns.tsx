@@ -1,7 +1,7 @@
 "use client";
 
+import type { Journal } from "@/constants";
 import type { ColumnDef } from "@tanstack/react-table";
-import type { Journal } from "../types";
 
 const isVietnamese = (text: string) => /[\u00C0-\u1EF9]/.test(text);
 
