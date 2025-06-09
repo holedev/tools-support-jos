@@ -5,7 +5,8 @@ import {
   FileBarChartIcon,
   FileTextIcon,
   FileUpIcon,
-  MailCheckIcon
+  MailCheckIcon,
+  FileEditIcon
 } from "lucide-react";
 
 import {
@@ -50,6 +51,11 @@ const items = [
     title: "OJS Convert",
     url: "/tools/ojs-convert",
     icon: FileUpIcon
+  },
+  {
+    title: "Journal Convert",
+    url: "/tools/journal-convert",
+    icon: FileEditIcon
   },
   {
     title: "Redif Analysis",
