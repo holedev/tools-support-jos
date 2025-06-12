@@ -7,8 +7,14 @@ export const metadata = {
 
 export default function JournalConvertPage() {
   return (
-    <div className="container mx-auto py-6">
-      <h1 className="text-2xl font-bold mb-6">Journal HTML Converter</h1>
+    <div className='container mx-auto py-6'>
+      <h1 className='text-2xl font-bold mb-4'>Journal HTML Converter</h1>
+      <div className='mb-6'>
+        <p className='text-muted-foreground'>
+          Convert and standardize HTML content between different journal formats. Helps you transform content while
+          maintaining structure and preserving formatting standards.
+        </p>
+      </div>
       <ConvertForm />
     </div>
   );

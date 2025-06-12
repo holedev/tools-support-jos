@@ -3,10 +3,10 @@ import {
   CalendarIcon,
   ChevronDownIcon,
   FileBarChartIcon,
+  FileEditIcon,
   FileTextIcon,
   FileUpIcon,
-  MailCheckIcon,
-  FileEditIcon
+  MailCheckIcon
 } from "lucide-react";
 
 import {
@@ -26,41 +26,61 @@ import { ThemeToggle } from "./theme-toggle";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./ui/collapsible";
 
 // Menu items.
-const items = [
+const toolGroups = [
   {
-    title: "Metadata",
-    url: "/tools/metadata",
-    icon: FileTextIcon
+    title: "Document Processing",
+    items: [
+      {
+        title: "HTML Formatter",
+        url: "/tools/html-formatter",
+        icon: FileTextIcon
+      },
+      {
+        title: "Journal Convert",
+        url: "/tools/journal-convert",
+        icon: FileEditIcon
+      },
+      {
+        title: "XML Convert",
+        url: "/tools/ojs-convert",
+        icon: FileUpIcon
+      },
+      {
+        title: "Metadata",
+        url: "/tools/metadata",
+        icon: FileTextIcon
+      }
+    ]
   },
   {
-    title: "SMTP Check",
-    url: "/tools/smtp-check",
-    icon: MailCheckIcon
+    title: "Publication Management",
+    items: [
+      {
+        title: "Publication",
+        url: "/tools/publication",
+        icon: CalendarIcon
+      },
+      {
+        title: "Redif Analysis",
+        url: "/tools/redif-analysis",
+        icon: FileBarChartIcon
+      },
+      {
+        title: "Calendar Export",
+        url: "/tools/calendar-export",
+        icon: CalendarDaysIcon
+      }
+    ]
   },
   {
-    title: "Publication",
-    url: "/tools/publication",
-    icon: CalendarIcon
-  },
-  {
-    title: "Calendar Export",
-    url: "/tools/calendar-export",
-    icon: CalendarDaysIcon
-  },
-  {
-    title: "OJS Convert",
-    url: "/tools/ojs-convert",
-    icon: FileUpIcon
-  },
-  {
-    title: "Journal Convert",
-    url: "/tools/journal-convert",
-    icon: FileEditIcon
-  },
-  {
-    title: "Redif Analysis",
-    url: "/tools/redif-analysis",
-    icon: FileBarChartIcon
+    title: "Server Tools",
+    items: [
+      {
+        title: "SMTP Check",
+        url: "/tools/smtp-check",
+        icon: MailCheckIcon
+      }
+    ]
   }
 ];
 
@@ -73,32 +93,34 @@ export function AppSidebar() {
         </Link>
       </SidebarHeader>
       <SidebarContent>
-        <Collapsible defaultOpen className='group/collapsible'>
-          <SidebarGroup>
-            <SidebarGroupLabel asChild>
-              <CollapsibleTrigger className='cursor-pointer'>
-                Tools
-                <ChevronDownIcon className='ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180' />
-              </CollapsibleTrigger>
-            </SidebarGroupLabel>
-            <CollapsibleContent>
-              <SidebarGroupContent>
-                <SidebarMenu>
-                  {items.map((item) => (
-                    <SidebarMenuItem key={item.title}>
-                      <SidebarMenuButton asChild>
-                        <Link href={item.url}>
-                          <item.icon />
-                          <span>{item.title}</span>
-                        </Link>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                  ))}
-                </SidebarMenu>
-              </SidebarGroupContent>
-            </CollapsibleContent>
-          </SidebarGroup>
-        </Collapsible>
+        {toolGroups.map((group) => (
+          <Collapsible key={group.title} defaultOpen className='group/collapsible'>
+            <SidebarGroup>
+              <SidebarGroupLabel asChild>
+                <CollapsibleTrigger className='cursor-pointer'>
+                  {group.title}
+                  <ChevronDownIcon className='ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180' />
+                </CollapsibleTrigger>
+              </SidebarGroupLabel>
+              <CollapsibleContent>
+                <SidebarGroupContent>
+                  <SidebarMenu>
+                    {group.items.map((item) => (
+                      <SidebarMenuItem key={item.title}>
+                        <SidebarMenuButton asChild>
+                          <Link href={item.url}>
+                            <item.icon />
+                            <span>{item.title}</span>
+                          </Link>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    ))}
+                  </SidebarMenu>
+                </SidebarGroupContent>
+              </CollapsibleContent>
+            </SidebarGroup>
+          </Collapsible>
+        ))}
       </SidebarContent>
       <SidebarFooter className='px-4 py-2 flex justify-center'>
         <ThemeToggle />

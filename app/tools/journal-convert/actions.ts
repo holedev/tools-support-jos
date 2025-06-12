@@ -1,13 +1,13 @@
 "use server";
 
+import { _JOURNAL_PUBLICATION_DATA } from "@/constants";
 import type { ConvertJournalRequest } from "./types";
 import { convertJournal } from "./utils";
-import { _JOURNAL_PUBLICATION_DATA } from "@/constants";
 
 export async function convertJournalAction(html: string, fromJournalPath: string, toJournalPath: string) {
   try {
-    const fromJournal = _JOURNAL_PUBLICATION_DATA.find(j => j.path === fromJournalPath);
-    const toJournal = _JOURNAL_PUBLICATION_DATA.find(j => j.path === toJournalPath);
+    const fromJournal = _JOURNAL_PUBLICATION_DATA.find((j) => j.path === fromJournalPath);
+    const toJournal = _JOURNAL_PUBLICATION_DATA.find((j) => j.path === toJournalPath);
 
     if (!fromJournal || !toJournal) {
       throw new Error("Invalid journal paths provided");

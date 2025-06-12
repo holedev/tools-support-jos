@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Calendar, CalendarDays, FileCode, FileUp, MailCheck } from "lucide-react";
+import { Calendar, CalendarDays, FileBarChart, FileCode, FileEdit, FileText, FileUp, MailCheck } from "lucide-react";
 import Link from "next/link";
 
 const tools = [
@@ -39,6 +39,27 @@ const tools = [
       "Convert OJS 2.4.8 XML files to OJS 3.1.2 format. Configurable options for English-only or bilingual content with customizable section settings.",
     icon: <FileUp className='h-6 w-6' />,
     href: "/tools/ojs-convert"
+  },
+  {
+    name: "Journal Convert",
+    description:
+      "Convert journal content between different formats. Support for various journal formats and customizable conversion options.",
+    icon: <FileEdit className='h-6 w-6' />,
+    href: "/tools/journal-convert"
+  },
+  {
+    name: "HTML Formatter",
+    description:
+      "Format and beautify HTML code. Clean up messy HTML with proper indentation and structure for better readability.",
+    icon: <FileText className='h-6 w-6' />,
+    href: "/tools/html-formatter"
+  },
+  {
+    name: "Redif Analysis",
+    description:
+      "Analyze and validate ReDIF (Research Documents Information Format) files. Check structure and content of research document metadata.",
+    icon: <FileBarChart className='h-6 w-6' />,
+    href: "/tools/redif-analysis"
   }
 ];
 

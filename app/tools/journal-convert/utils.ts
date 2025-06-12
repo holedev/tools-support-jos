@@ -7,7 +7,7 @@ export function convertJournal(request: ConvertJournalRequest): ConvertJournalRe
 
   // Helper function to escape regex special characters
   const escapeRegex = (string: string) => {
-    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   };
 
   // Replace all occurrences of path abbreviation (e.g., "econ-en" -> "tech-en")
