@@ -75,11 +75,6 @@ const toolGroups = [
   {
     title: "Server Tools",
     items: [
-      {
-        title: "SMTP Check",
-        url: "/tools/smtp-check",
-        icon: MailCheckIcon
-      }
     ]
   }
 ];
