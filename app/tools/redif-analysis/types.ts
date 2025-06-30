@@ -8,6 +8,8 @@ export interface ArticleMetadata {
   authorsOU: number;
   authorsNonOU: number;
   authorsForeign: number;
+  month: string; // blank for now
+  hasAuthorForeign: number; // 1 if any author is Foreign, else 0
 }
 
 export interface AuthorInfo {

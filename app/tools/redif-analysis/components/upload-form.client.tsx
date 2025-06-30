@@ -31,6 +31,7 @@ export function RedifUploadForm() {
 
   const analyzeAuthors = useCallback((workplace: string): "OU" | "NonOU" | "Foreign" => {
     const normalized = workplace.toLowerCase();
+    console.info("[upload-form.client.tsx:34] ", normalized);
     if (!normalized.endsWith("vietnam") && !normalized.endsWith("việt nam")) {
       return "Foreign";
     }
@@ -153,7 +154,9 @@ export function RedifUploadForm() {
         firstAuthorCategory: article.firstAuthorCategory,
         authorsOU,
         authorsNonOU,
-        authorsForeign
+        authorsForeign,
+        month: "",
+        hasAuthorForeign: article.authors.some((a) => a.category === "Foreign") ? 1 : 0
       };
     });
 
@@ -196,7 +199,9 @@ export function RedifUploadForm() {
       "First Author",
       "OU Authors",
       "Non-OU Authors",
-      "Foreign Authors"
+      "Foreign Authors",
+      "Has Author Foreign",
+      "Month"
     ];
 
     const rows = result.articles.map((article) => [
@@ -207,7 +212,9 @@ export function RedifUploadForm() {
       article.firstAuthorCategory,
       article.authorsOU,
       article.authorsNonOU,
-      article.authorsForeign
+      article.authorsForeign,
+      article.hasAuthorForeign,
+      article.month
     ]);
 
     const csvContent = [headers.join(";"), ...rows.map((row) => row.map((cell) => `"${cell}"`).join(";"))].join("\n");
@@ -278,6 +285,8 @@ export function RedifUploadForm() {
                   <TableHead>OU Authors</TableHead>
                   <TableHead>Non-OU Authors</TableHead>
                   <TableHead>Foreign Authors</TableHead>
+                  <TableHead>Has Author Foreign</TableHead>
+                  <TableHead>Month</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -291,6 +300,8 @@ export function RedifUploadForm() {
                     <TableCell>{article.authorsOU}</TableCell>
                     <TableCell>{article.authorsNonOU}</TableCell>
                     <TableCell>{article.authorsForeign}</TableCell>
+                    <TableCell>{article.hasAuthorForeign}</TableCell>
+                    <TableCell>{article.month}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
