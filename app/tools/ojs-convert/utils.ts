@@ -17,17 +17,20 @@ export function createParser() {
     textNodeName: "#text",
     isArray: (name: string) =>
       [
+        "id",
         "title",
         "abbrev",
-        "subject",
+        "policy",
         "article",
         "author",
-        "galley",
+        "article_galley",
         "abstract",
         "keywords",
-        "givenname",
+        "disciplines",
+        "affiliation",
         "familyname",
-        "affiliation"
+        "givenname",
+        "citation"
       ].includes(name),
     parseAttributeValue: true,
     parseTagValue: true,
@@ -53,15 +56,13 @@ export function validateParsedData(data: ParsedXML): void {
     throw new Error("Invalid XML: Missing issue element");
   }
 
-  if (!data.issue.section) {
+  if (!data.issue.sections) {
     throw new Error("Invalid XML: No sections found");
   }
 
-  const articles = data.issue.section.article;
+  const articles = data.issue.articles;
 
-  for (const article of articles) {
-    if (!article.title || !article["@_locale"]) {
-      throw new Error("Invalid XML: Article missing title or locale");
-    }
+  if (!articles) {
+    throw new Error("Invalid XML: No articles found");
   }
 }

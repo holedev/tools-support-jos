@@ -14,6 +14,8 @@ export function convertOJSXml(oldXml: string, config: OJSConverterConfig = {}): 
     const oldDoc = parser.parse(oldXml) as ParsedXML;
     validateParsedData(oldDoc);
 
+    console.info('[xml-converter.ts:17] ', oldDoc)
+
     const issue = oldDoc.issue;
     const xmlBody = builder.build({ issue: convertIssue(issue, config) });
     const xmlHeader = '<?xml version="1.0" encoding="UTF-8"?>\n';

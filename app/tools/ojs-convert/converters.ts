@@ -3,39 +3,39 @@ import { DEFAULT_CONFIG } from "./config";
 import type { OldArticle, OldArticleAuthor, OldCover, OldIssue, OldSection } from "./types";
 import { escapeXml } from "./utils";
 
-export function convertAuthors(authors: OldArticleAuthor[], config: OJSConverterConfig) {
+export function convertAuthors(authors: OldArticleAuthor[], config: OJSConverterConfig, primaryContactId?: string) {
   const { isOnlyEnglishVersion, langEn, langVi, authorUserGroup } = { ...DEFAULT_CONFIG, ...config };
 
   return authors.map((author) => ({
-    "@_primary_contact": author["@_primary_contact"] ? "true" : "false",
+    "@_primary_contact": author["@_id"] === primaryContactId ? "true" : "false",
     "@_include_in_browse": "true",
     "@_user_group_ref": authorUserGroup,
     givenname: isOnlyEnglishVersion
-      ? { "@_locale": langEn, "#text": `${author.firstname} ${author.middlename}` }
+      ? { "@_locale": langEn, "#text": author.givenname[0]["#text"] }
       : [
-          {
-            "@_locale": langVi,
-            "#text": `${author.firstname} ${author.middlename}`
-          },
-          {
-            "@_locale": langEn,
-            "#text": `${author.firstname} ${author.middlename}`
-          }
-        ],
+        {
+          "@_locale": langVi,
+          "#text": `${author.givenname[0]["#text"]}`
+        },
+        {
+          "@_locale": langEn,
+          "#text": `${author.givenname[0]["#text"]}`
+        }
+      ],
     familyname: isOnlyEnglishVersion
-      ? { "@_locale": langEn, "#text": author.lastname }
+      ? { "@_locale": langEn, "#text": author.familyname[0]["#text"] }
       : [
-          {
-            "@_locale": langVi,
-            "#text": author.lastname
-          },
-          {
-            "@_locale": langEn,
-            "#text": author.lastname
-          }
-        ],
+        {
+          "@_locale": langVi,
+          "#text": author.familyname[0]["#text"]
+        },
+        {
+          "@_locale": langEn,
+          "#text": author.familyname[0]["#text"]
+        }
+      ],
     email: author.email,
-    biography: author.affiliation?.map((bio) => ({
+    biography: author.affiliation.map((bio) => ({
       "@_locale": bio["@_locale"],
       "#text": bio["#text"]
     }))
@@ -45,38 +45,48 @@ export function convertAuthors(authors: OldArticleAuthor[], config: OJSConverter
 export function convertArticles(articles: OldArticle[], config: OJSConverterConfig) {
   const { isOnlyEnglishVersion, langEn, xmlnsXsi, xmlnsXsiSchema, sectionAbbr } = { ...DEFAULT_CONFIG, ...config };
 
+
   return articles.map((article: OldArticle, idx) => {
+
+    const pdfID = article.publication.article_galley[0].submission_file_ref["@_id"] || `${idx + 1}`;
+
+    const pdfFile = article.submission_file.find((file) => {
+      console.info('[converters.ts:56] ', file["@_id"])
+      return file["@_id"] === pdfID;
+    })
+
     return {
       "@_xmlns:xsi": xmlnsXsi,
       "@_locale": article["@_locale"],
       "@_language": article["@_language"],
-      "@_date_submitted": article.date_published,
+      "@_date_submitted": article["@date_submitted"],
       "@_stage": "submission",
-      "@_date_published": article.date_published,
+      "@_date_published": article.publication["@_date_published"],
       "@_section_ref": sectionAbbr,
       "@_seq": `${idx + 1}`,
       "@_access_status": "0",
       id: {
-        "#text": article.id["#text"] || `${idx + 1}`,
+        "#text": article.id[0]["#text"] || `${idx + 1}`,
         "@_type": "internal",
         "@_advice": "ignore"
       },
-      title: isOnlyEnglishVersion ? { "@_locale": langEn, "#text": article.title[0]["#text"] } : article.title,
-      abstract: article.abstract.map((abstract) => {
+      title: isOnlyEnglishVersion ? { "@_locale": langEn, "#text": article.publication.title[0]["#text"] }
+        : article.publication.title,
+      abstract: article.publication.abstract.map((abstract) => {
         const abstractText = escapeXml(abstract["#text"]);
         return {
           "@_locale": abstract["@_locale"],
           "#text": abstractText.replace(/</g, "&lt;").replace(/>/g, "&gt;")
         };
       }),
-      keywords: article.indexing.subject.map((subject) => ({
-        "@_locale": subject["@_locale"],
-        keyword: escapeXml(subject["#text"])
+      keywords: article.publication.keywords.map((keyword) => ({
+        "@_locale": keyword["@_locale"],
+        keyword: keyword.keyword.map((kw) => escapeXml(kw))
       })),
       authors: {
         "@_xmlns:xsi": xmlnsXsi,
         "@_xsi:schemaLocation": xmlnsXsiSchema,
-        author: convertAuthors(article.author, config)
+        author: convertAuthors(article.publication.authors.author, config, article.publication["@_primary_contact_id"])
       },
       submission_file: {
         "@_xmlns:xsi": xmlnsXsi,
@@ -86,19 +96,19 @@ export function convertArticles(articles: OldArticle[], config: OJSConverterConf
         revision: {
           "@_number": "1",
           "@_genre": "Điều văn bản",
-          "@_filename": article.galley[0].file.embed["@_filename"],
+          "@_filename": pdfFile?.name["#text"] || "document.pdf",
           "@_viewable": "false",
-          "@_date_uploaded": article.date_published,
-          "@_date_modified": article.date_published,
+          "@_date_uploaded": article.publication["@_date_published"],
+          "@_date_modified": article.publication["@_date_published"],
           "@_filetype": "application/pdf",
           "@_uploader": "tuyethtk",
           name: {
-            "@_locale": article.galley[0]["@_locale"],
-            "#text": article.galley[0].file.embed["@_filename"]
+            "@_locale": article.publication.article_galley[0].name["@_locale"],
+            "#text": article.publication.article_galley[0].name["#text"]
           },
           embed: {
             "@_encoding": "base64",
-            "#text": article.galley[0].file.embed["#text"]
+            "#text": pdfFile?.file.embed["#text"]
           }
         }
       },
@@ -107,21 +117,21 @@ export function convertArticles(articles: OldArticle[], config: OJSConverterConf
         "@_approved": "false",
         "@_xsi:schemaLocation": xmlnsXsiSchema,
         id: {
-          "#text": article.galley[0]?.id?.["#text"] || `${idx + 1}`,
+          "#text": article.publication.article_galley[0].id[0]["#text"] || `${idx + 1}`,
           "@_type": "internal",
           "@_advice": "ignore"
         },
         name: {
-          "@_locale": article.galley[0]["@_locale"],
+          "@_locale": article.publication.article_galley[0].name["@_locale"],
           "#text": "PDF"
         },
         seq: "0",
         submission_file_ref: {
-          "@_id": `${idx + 1}`,
+          "@_id": pdfID,
           "@_revision": "1"
         }
       },
-      pages: article.pages
+      pages: article.publication.pages
     };
   });
 }
@@ -157,11 +167,11 @@ export function convertSection(oldSection: OldSection, config: OJSConverterConfi
 export function convertCovers(covers: OldCover[]) {
   return covers.map((cover) => ({
     "@_locale": cover["@_locale"],
-    cover_image: cover.image.embed["@_filename"],
-    cover_image_alt_text: "",
+    cover_image: cover.cover_image,
+    cover_image_alt_text: cover.cover_image_alt_text || "",
     embed: {
       "@_encoding": "base64",
-      "#text": cover.image.embed["#text"]
+      "#text": cover.embed["#text"]
     }
   }));
 }
@@ -180,7 +190,7 @@ export function convertIssue(issue: OldIssue, config: OJSConverterConfig) {
     langVi
   } = { ...DEFAULT_CONFIG, ...config };
 
-  const issueTitle = `${issue.volume}(${issue.number})${issue.year}`;
+  const issueTitle = `${issue.issue_identification.title[0]["#text"]}`;
 
   return {
     "@_xmlns": xmlns,
@@ -190,7 +200,7 @@ export function convertIssue(issue: OldIssue, config: OJSConverterConfig) {
     "@_access_status": issueAccessStatus,
     "@_xsi:schemaLocation": xmlnsXsiSchema,
     id: {
-      "#text": issue.id?.["#text"] || "1",
+      "#text": issue.id[0]["#text"] || "1",
       "@_type": "internal",
       "@_advice": "ignore"
     },
@@ -198,21 +208,21 @@ export function convertIssue(issue: OldIssue, config: OJSConverterConfig) {
       title: [
         {
           "@_locale": langEn,
-          "#text": issue.title[0]["#text"] || issueTitle
+          "#text": issueTitle
         },
         {
           "@_locale": langVi,
-          "#text": issue.title[0]["#text"] || issueTitle
+          "#text": issueTitle
         }
       ]
     },
     date_published: issueDatePublished || issue.date_published,
     last_modified: issueDateModified || issue.date_published,
     sections: {
-      section: convertSection(issue.section, config)
+      section: convertSection(issue.sections.section, config)
     },
     covers: {
-      cover: convertCovers(issue.cover)
+      cover: convertCovers(issue.covers?.cover || [])
     },
     issue_galleys: {
       "@_xmlns:xsi": xmlnsXsi,
@@ -221,7 +231,7 @@ export function convertIssue(issue: OldIssue, config: OJSConverterConfig) {
     articles: {
       "@_xmlns:xsi": xmlnsXsi,
       "@_xsi:schemaLocation": xmlnsXsiSchema,
-      article: convertArticles(issue.section.article, config)
+      article: convertArticles(issue.articles.article, config)
     }
   };
 }
