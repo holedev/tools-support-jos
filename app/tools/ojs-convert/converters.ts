@@ -13,27 +13,27 @@ export function convertAuthors(authors: OldArticleAuthor[], config: OJSConverter
     givenname: isOnlyEnglishVersion
       ? { "@_locale": langEn, "#text": author.givenname[0]["#text"] }
       : [
-        {
-          "@_locale": langVi,
-          "#text": `${author.givenname[0]["#text"]}`
-        },
-        {
-          "@_locale": langEn,
-          "#text": `${author.givenname[0]["#text"]}`
-        }
-      ],
+          {
+            "@_locale": langVi,
+            "#text": `${author.givenname[0]["#text"]}`
+          },
+          {
+            "@_locale": langEn,
+            "#text": `${author.givenname[0]["#text"]}`
+          }
+        ],
     familyname: isOnlyEnglishVersion
       ? { "@_locale": langEn, "#text": author.familyname[0]["#text"] }
       : [
-        {
-          "@_locale": langVi,
-          "#text": author.familyname[0]["#text"]
-        },
-        {
-          "@_locale": langEn,
-          "#text": author.familyname[0]["#text"]
-        }
-      ],
+          {
+            "@_locale": langVi,
+            "#text": author.familyname[0]["#text"]
+          },
+          {
+            "@_locale": langEn,
+            "#text": author.familyname[0]["#text"]
+          }
+        ],
     email: author.email,
     biography: author.affiliation.map((bio) => ({
       "@_locale": bio["@_locale"],
@@ -45,15 +45,14 @@ export function convertAuthors(authors: OldArticleAuthor[], config: OJSConverter
 export function convertArticles(articles: OldArticle[], config: OJSConverterConfig) {
   const { isOnlyEnglishVersion, langEn, xmlnsXsi, xmlnsXsiSchema, sectionAbbr } = { ...DEFAULT_CONFIG, ...config };
 
-
   return articles.map((article: OldArticle, idx) => {
-
     const pdfID = article.publication.article_galley[0].submission_file_ref["@_id"] || `${idx + 1}`;
 
     const pdfFile = article.submission_file.find((file) => {
-      console.info('[converters.ts:56] ', file["@_id"])
       return file["@_id"] === pdfID;
-    })
+    });
+
+    const seq = article.publication.authors.author[0]["@_seq"] || "1";
 
     return {
       "@_xmlns:xsi": xmlnsXsi,
@@ -63,14 +62,15 @@ export function convertArticles(articles: OldArticle[], config: OJSConverterConf
       "@_stage": "submission",
       "@_date_published": article.publication["@_date_published"],
       "@_section_ref": sectionAbbr,
-      "@_seq": `${idx + 1}`,
+      "@_seq": `${seq}`,
       "@_access_status": "0",
       id: {
         "#text": article.id[0]["#text"] || `${idx + 1}`,
         "@_type": "internal",
         "@_advice": "ignore"
       },
-      title: isOnlyEnglishVersion ? { "@_locale": langEn, "#text": article.publication.title[0]["#text"] }
+      title: isOnlyEnglishVersion
+        ? { "@_locale": langEn, "#text": article.publication.title[0]["#text"] }
         : article.publication.title,
       abstract: article.publication.abstract.map((abstract) => {
         const abstractText = escapeXml(abstract["#text"]);
@@ -91,7 +91,7 @@ export function convertArticles(articles: OldArticle[], config: OJSConverterConf
       submission_file: {
         "@_xmlns:xsi": xmlnsXsi,
         "@_stage": "proof",
-        "@_id": `${idx + 1}`,
+        "@_id": `${pdfID}`,
         "@_xsi:schemaLocation": xmlnsXsiSchema,
         revision: {
           "@_number": "1",

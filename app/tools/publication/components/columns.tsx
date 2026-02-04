@@ -5,14 +5,13 @@ import type { ColumnDef } from "@tanstack/react-table";
 
 const isVietnamese = (text: string) => /[\u00C0-\u1EF9]/.test(text);
 
-const getIssueNumber = (journal: Journal, month: string, year = 2025) => {
+const getIssueNumber = (journal: Journal, month: string, year = 2026) => {
   const isVi = isVietnamese(journal.journal);
-  const baseVolume = isVi ? 20 : 15;
-  const volume = baseVolume + (year - 2025);
+  const baseVolume = isVi ? 21 : 16;
+  const volume = baseVolume + (year - 2026);
 
   // Find position of this month in the journal's publication dates
   const position = journal.publicationDate.sort((a, b) => Number.parseInt(a) - Number.parseInt(b)).indexOf(month) + 1;
-
   return position > 0 ? `${volume}(${position})${year}` : "";
 };
 

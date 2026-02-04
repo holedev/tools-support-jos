@@ -8,7 +8,7 @@ export interface Journal {
 export const _JOURNAL_PUBLICATION_DATA: Journal[] = [
   {
     journal: "ECONOMICS AND BUSINESS ADMINISTRATION",
-    publicationDate: ["01", "02", "04", "06", "07", "08"],
+    publicationDate: ["01", "02", "04", "06", "07", "08", "09", "10", "11", "12"],
     fullName: "HO CHI MINH CITY OPEN UNIVERSITY JOURNAL OF SCIENCE - ECONOMICS AND BUSINESS ADMINISTRATION",
     path: "econ-en"
   },
@@ -20,7 +20,7 @@ export const _JOURNAL_PUBLICATION_DATA: Journal[] = [
   },
   {
     journal: "SOCIAL SCIENCES",
-    publicationDate: ["02", "04", "06", "08", "10", "12"],
+    publicationDate: ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"],
     fullName: "HO CHI MINH CITY OPEN UNIVERSITY JOURNAL OF SCIENCE - SOCIAL SCIENCES",
     path: "soci-en"
   },

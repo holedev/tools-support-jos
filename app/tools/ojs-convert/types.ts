@@ -41,7 +41,7 @@ export interface OldArticleGalley {
   };
   submission_file_ref: {
     "@_id": string;
-  }
+  };
   seq: string;
 }
 
@@ -72,12 +72,12 @@ export interface OldPublication {
     discipline: string;
   }[];
   authors: {
-    author: OldArticleAuthor[]
+    author: OldArticleAuthor[];
   };
   article_galley: OldArticleGalley[];
   citations: {
     citation: string[];
-  }
+  };
   pages: string;
 }
 
@@ -98,8 +98,8 @@ export interface OldSubmissionFile {
     embed: {
       "@_encoding": string;
       "#text": string;
-    }
-  }
+    };
+  };
 }
 
 export interface OldIndexing {
@@ -133,7 +133,7 @@ export interface OldIssue {
   id: LocalizedTextAdvice[];
   issue_identification: {
     title: LocalizedText[];
-  }
+  };
   date_published: string;
   last_modified: string;
   sections: {

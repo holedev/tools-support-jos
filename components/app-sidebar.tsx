@@ -74,8 +74,7 @@ const toolGroups = [
   },
   {
     title: "Server Tools",
-    items: [
-    ]
+    items: []
   }
 ];
 
