@@ -1,6 +1,6 @@
 import type { OJSConverterConfig } from "./config";
 import { convertIssue } from "./converters";
-import type { ParsedXML } from "./types";
+import type { OldPublication, ParsedXML } from "./types";
 import { createBuilder, createParser, validateParsedData } from "./utils";
 
 export { restoreXml } from "./utils";
@@ -12,6 +12,19 @@ export function convertOJSXml(oldXml: string, config: OJSConverterConfig = {}): 
     const builder = createBuilder();
 
     const oldDoc = parser.parse(oldXml) as ParsedXML;
+
+    // Normalize multi-publication articles to a single latest publication
+    for (const article of oldDoc.issue.articles.article) {
+      if (Array.isArray(article.publication)) {
+        const publications = article.publication as OldPublication[];
+        article.publication = publications.reduce((latest, current) =>
+          (current["@_date_published"] ?? "") > (latest["@_date_published"] ?? "")
+            ? current
+            : latest
+        );
+      }
+    }
+
     validateParsedData(oldDoc);
 
     const issue = oldDoc.issue;
@@ -20,7 +33,8 @@ export function convertOJSXml(oldXml: string, config: OJSConverterConfig = {}): 
     return xmlHeader + xmlBody;
   } catch (err) {
     if (err instanceof Error) {
-      throw new Error(`XML Processing Error: ${err.message}`);
+      err.message = `XML Processing Error: ${err.message}`;
+      throw err;
     }
     throw new Error("An unexpected error occurred while processing the XML");
   }

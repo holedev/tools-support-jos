@@ -164,7 +164,7 @@ export function ConverterForm() {
                 id='issueDatePublished'
                 value={config.issueDatePublished}
                 onChange={(e) => updateConfig("issueDatePublished", e.target.value)}
-                className='max-w-[200px]'
+                className='max-w-50'
               />
             </div>
           )}
@@ -238,7 +238,7 @@ export function ConverterForm() {
               ) : (
                 <>
                   <FileUp className='mx-auto h-8 w-8 text-muted-foreground/60' />
-                  <p>Drag and drop your OJS 2.4.8 XML file here, or click to browse</p>
+                  <p>Drag and drop your OJS 3.3.0-21 XML file here, or click to browse</p>
                   <p className='text-sm mt-1'>Only .xml files are supported</p>
                 </>
               )}
@@ -287,7 +287,7 @@ export function ConverterForm() {
                 value={outputXml}
                 readOnly
                 spellCheck={false}
-                className='min-h-[200px] font-mono text-sm'
+                className='min-h-50 font-mono text-sm'
                 aria-label='Output XML content (truncated)'
               />
               <div className='absolute bottom-2 right-2'>
