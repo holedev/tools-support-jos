@@ -31,8 +31,10 @@ export function RedifUploadForm() {
 
   const analyzeAuthors = useCallback((workplace: string): "OU" | "NonOU" | "Foreign" => {
     const normalized = workplace.toLowerCase();
-    console.info("[upload-form.client.tsx:34] ", normalized);
-    if (!normalized.endsWith("vietnam") && !normalized.endsWith("việt nam")) {
+    const isVietnam =
+      normalized.endsWith("vietnam") || normalized.endsWith("việt nam") || normalized.endsWith("viet nam");
+
+    if (!isVietnam) {
       return "Foreign";
     }
     if (
